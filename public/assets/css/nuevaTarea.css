@@ -1,0 +1,22 @@
+h1,
+#añadir {
+    text-align: center;
+}
+
+.formulario,
+.padrecolumnas {
+    display: flex;
+    justify-content: center;
+    flex-flow: row nowrap;
+}
+
+.info {
+    text-align: left;
+}
+
+.columnacampos {
+    margin: 1em;
+    display: flex;
+    flex-flow: column nowrap;
+    /* width: 40%; */
+}

@@ -1,0 +1,50 @@
+body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+
+footer {
+    margin-top: auto;
+    display: table;
+    width: 100%;
+    text-align: center;
+}
+
+#linkhead {
+    color: whitesmoke;
+}
+
+#linkhead:hover {
+    color: aqua;
+}
+
+#logout:hover {
+    color: red;
+}
+
+.botonesCabecera {
+    padding-top: 20px;
+}
+
+#sesion {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    margin-right: 40px;
+}
+
+.infosesion {
+    color: aqua;
+}
+
+.navbar-text {
+    align-items: left;
+    justify-content: left;
+    text-align: right;
+    margin: 0;
+}
