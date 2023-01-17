@@ -83,6 +83,19 @@
                 </select>
                 {!!$error->ErrorFormateado('operario')!!}
                 <br>
+                <label class="form-label">Cliente</label>
+                <select class="form-select form-select-lg" name="cliente">
+                    <option disabled selected>Selecciona cliente</option>
+                    @foreach ($clientes as $cliente)
+                    @if($_POST['cliente'] == $cliente['cliente_id'])
+                    <option value="{{$cliente['cliente_id']}}" selected>{{$cliente["nombre"]}}</option>
+                    @else
+                    <option value="{{$cliente['cliente_id']}}">{{$cliente["nombre"]}}</option>
+                    @endif
+                    @endforeach
+                </select>
+                {!!$error->ErrorFormateado('cliente')!!}
+                <br>
                 <label class="form-label">Fecha de creación de tarea</label>
                 <input type="date" name="fechacreacion" class="form-control form-control-sm" value="<?= date('Y-m-d') ?>">
                 {!!$error->ErrorFormateado('fechacreacion')!!}<br>
@@ -94,13 +107,7 @@
 
                 <label class="form-label">Anotaciones posteriores</label>
                 <textarea name="anotapost" class="form-control form-control-sm" cols="10" rows="1"><?= isset($_POST['anotapost']) ? $_POST['anotapost'] : '' ?></textarea><br>
-
-                <!-- <label class="form-label">Fichero resumen</label>
-                <input type="file" name="fichero" class="form-control form-control-sm" id="formFileSm"><br>
-
-                <label class="form-label">Foto del trabajo</label>
-                <input type="file" name="foto" class="form-control form-control-sm" id="formFileSm"><br><br><br> -->
-                <br><input class="btn btn-primary" type="submit" value="Añadir Tarea" id="añadir">
+                <input class="btn btn-primary" type="submit" value="Añadir Tarea" id="añadir">
                 <br><a href="index.php?controller=tareas&action=listar" class="btn btn-danger" role="button">Volver a listado</a>
             </div>
         </div>
