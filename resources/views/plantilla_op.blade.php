@@ -1,12 +1,12 @@
 <?php
-session_start();
-if ($_SESSION['idx_dentro'] == false || $_SESSION['tipo'] == 'administrador') {
-    session_unset(); // Libera todas las variables de sesión
-    session_destroy(); // Destruimos la sesión
-    header('Location: index.php?controller=login&action=login');
-    // Finalizamos script
-    exit();
-}
+// session_start();
+// if ($_SESSION['idx_dentro'] == false || $_SESSION['tipo'] == 'administrador') {
+//     session_unset(); // Libera todas las variables de sesión
+//     session_destroy(); // Destruimos la sesión
+//     header('Location: index.php?controller=login&action=login');
+//     // Finalizamos script
+//     exit();
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +15,7 @@ if ($_SESSION['idx_dentro'] == false || $_SESSION['tipo'] == 'administrador') {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bunglebuild S.L.</title>
+    <title>Nosecaen S.L.</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -31,7 +31,7 @@ if ($_SESSION['idx_dentro'] == false || $_SESSION['tipo'] == 'administrador') {
     <header class="bg-dark text-center text-white">
         <nav class="navbar navbar-inverse navbar-expand-lg navbar-dark bg-dark">
             <div class="navbar-header">
-                <h6 class="navbar-brand">Bunglebuild S.L.</h6>
+                <h6 class="navbar-brand">Nosecaen S.L.</h6>
             </div>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto botonesCabecera">
@@ -49,11 +49,11 @@ if ($_SESSION['idx_dentro'] == false || $_SESSION['tipo'] == 'administrador') {
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <div id="sesion">
+                    {{-- <div id="sesion">
                         <p class="navbar-text">Bienvenido, <span class="infosesion">{{$sesion["nombre"]}}</span></p>
                         <p class="navbar-text">Rol: <span class="infosesion">{{$sesion["tipo"]}}</span></p>
                         <p class="navbar-text">Sesión: <span class="infosesion">{{$sesion["hora"]}}</span></p>
-                    </div>
+                    </div> --}}
                     <li class="botonesCabecera"><a href="index.php?controller=login&action=salir" id="logout"><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
                 </ul>
             </div>

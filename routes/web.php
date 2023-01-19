@@ -14,18 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(LoginCtrl::class)->group(function () {
+Route::controller(UsersCtrl::class)->group(function () {
     Route::get('/', 'login');
 });
 
 Route::controller(TareasCtrl::class)->group(function () {
     Route::get('/', 'login');
-});
-
-Route::controller(UsuariosCtrl::class)->group(function () {
-    Route::get('/', 'login');
-});
-
-Route::get('/', function () {
-    return view('login');
 });
