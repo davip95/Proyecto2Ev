@@ -14,10 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(UsersCtrl::class)->group(function () {
+/*Route::get('/', function () {
+    return view('login');
+});*/
+
+/*Route::controller(UsersCtrl::class)->group(function () {
     Route::get('/', 'login');
-});
+});*/
 
 Route::controller(TareasCtrl::class)->group(function () {
-    Route::get('/', 'login');
+    Route::get('tareas/tareaCrear', 'crear');
 });

@@ -1,4 +1,4 @@
-@extends('plantilla_admin')
+@extends('plantilla')
 @section('cuerpo')
 <h1>Cambiar Nombre/Clave Usuario {{$usuario['idusuario']}}</h1>
 <br>

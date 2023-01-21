@@ -1,4 +1,4 @@
-@extends('plantilla_admin')
+@extends('plantilla')
 @section('cuerpo')
 <h1>Lista de usuarios</h1>
 <br>

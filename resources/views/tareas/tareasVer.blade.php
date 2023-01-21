@@ -1,4 +1,4 @@
-@extends('plantilla_admin')
+@extends('plantilla')
 @section('cuerpo')
 <h1>Lista de tareas</h1>
 <br>

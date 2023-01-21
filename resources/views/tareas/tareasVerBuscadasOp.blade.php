@@ -1,4 +1,4 @@
-@extends('plantilla_op')
+@extends('plantilla')
 @section('cuerpo')
 <h1>Resultados de búsqueda</h1>
 <br>

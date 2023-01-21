@@ -53,9 +53,9 @@
                     <li class="nav-item">
                         <a class="btn btn-dark" id="linkhead" href="index.php?controller=usuarios&action=crearUsuario" role="button"><i class="bi bi-person-plus"></i> Añadir Usuario</a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="btn btn-dark" id="linkhead" href="index.php?controller=usuarios&action=ver&id={{$sesion['idusuario']}}" role="button"><i class="bi bi-person-circle"></i> Mi Usuario</a>
-                    </li>
+                    </li> --}}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {{-- <div id="sesion">

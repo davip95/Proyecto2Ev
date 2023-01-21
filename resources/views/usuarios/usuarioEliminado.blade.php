@@ -1,4 +1,4 @@
-@extends('plantilla_admin')
+@extends('plantilla')
 @section('cuerpo')
 <h1>Usuario {{$idUsuario}} Eliminado</h1>
 <br>

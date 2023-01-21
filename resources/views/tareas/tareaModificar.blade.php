@@ -1,4 +1,4 @@
-@extends('plantilla_admin')
+@extends('plantilla')
 @section('cuerpo')
 <h1>Modificar tarea {{$tarea['idtarea']}}</h1>
 <div class="formulario">
