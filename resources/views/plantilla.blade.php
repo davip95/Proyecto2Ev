@@ -39,7 +39,7 @@
                         <a class="btn btn-dark" id="linkhead" href="index.php?controller=tareas&action=listar" role="button"><i class="bi bi-list-task"></i> Ver Tareas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="index.php?controller=tareas&action=crear" role="button"><i class="bi bi-clipboard2-plus"></i> Añadir Tarea</a>
+                        <a class="btn btn-dark" id="linkhead" href="{{ route('tarea.create') }}" role="button"><i class="bi bi-clipboard2-plus"></i> Añadir Tarea</a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-dark" id="linkhead" href="index.php?controller=tareas&action=verPendientes" role="button"><i class="bi bi-clock-history"></i> Tareas Pendientes</a>
@@ -76,7 +76,7 @@
         <div class="container p-4 pb-0">
             <!-- Section: Social media -->
             <section class="mb-4">
-                Proyecto PHP
+                SiempreColgados
             </section>
             <!-- Section: Social media -->
         </div>

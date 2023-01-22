@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginCtrl;
+use App\Http\Controllers\TareasCtrl;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,14 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::get('/', function () {
-    return view('login');
-});*/
+Route::get('/', function () {
+    return view('plantilla');
+});
 
 /*Route::controller(UsersCtrl::class)->group(function () {
     Route::get('/', 'login');
 });*/
 
-Route::controller(TareasCtrl::class)->group(function () {
+/*Route::controller(TareasCtrl::class)->group(function () {
     Route::get('tareas/tareaCrear', 'crear');
-});
+});*/
+
+Route::resource('tarea', TareasCtrl::class);

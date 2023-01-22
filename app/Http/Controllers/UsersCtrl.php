@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UsersCtrl extends Controller
 {
+    public function getOperarios()
+    {
+        return User::select('id', 'name')->where('tipo', '=', 'operario')->get();
+    }
+
     /**
      * Display a listing of the resource.
      *

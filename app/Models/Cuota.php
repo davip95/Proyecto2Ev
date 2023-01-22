@@ -10,4 +10,9 @@ class Cuota extends Model
     //use HasFactory;
     protected $table = 'cuotas';
     public $timestamps = false;
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class);
+    }
 }

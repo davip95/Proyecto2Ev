@@ -6,7 +6,7 @@
     <thead class="table-dark">
         <tr>
             <th>Fecha Creación</th>
-            <th>DNI</th>
+            <th>Cliente ID</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Teléfono</th>
@@ -20,8 +20,8 @@
     <tbody>
         @foreach ($tareas as $tarea)
         <tr>
-            <td>{{$tarea['fechacreacion']}}</td>
-            <td>{{$tarea['dni']}}</td>
+            <td>{{$tarea['fechacreacion']->format('d/m/Y')}}</td>
+            <td>{{$tarea['clientes_id']}}</td>
             <td>{{$tarea['nombre']}}</td>
             <td>{{$tarea['apellidos']}}</td>
             <td>{{$tarea['telefono']}}</td>
@@ -30,16 +30,16 @@
             <td>{{$tarea['estado']}}</td>
             <td>{{$tarea['fechafin']}}</td>
             <td>
-                <a href="index.php?controller=tareas&action=ver&id={{$tarea['idtarea']}}" class="btn btn-info" role="button">Detalles</a>
-                <a href="index.php?controller=tareas&action=editar&id={{$tarea['idtarea']}}" class="btn btn-warning" role="button">Editar</a>
-                <a href="index.php?controller=tareas&action=confirmaEliminar&id={{$tarea['idtarea']}}" class="btn btn-danger" role="button">Borrar</a>
+                <a href="index.php?controller=tareas&action=ver&id={{$tarea['id']}}" class="btn btn-info" role="button">Detalles</a>
+                <a href="index.php?controller=tareas&action=editar&id={{$tarea['id']}}" class="btn btn-warning" role="button">Editar</a>
+                <a href="index.php?controller=tareas&action=confirmaEliminar&id={{$tarea['id']}}" class="btn btn-danger" role="button">Borrar</a>
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
 
-<nav>
+{{-- <nav>
     <h5><em>Páginas</em></h5>
     <ul class="pagination">
         <!-- Si la página actual es mayor a uno, mostramos el botón para ir una página atrás y el de ir a la primera -->
@@ -78,5 +78,5 @@
                 @endif
     </ul>
 </nav>
-<h5><em>Tareas totales: {{$conteo}}</em></h5>
+<h5><em>Tareas totales: {{$conteo}}</em></h5> --}}
 @endsection
