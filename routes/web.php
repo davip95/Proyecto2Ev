@@ -19,12 +19,9 @@ Route::get('/', function () {
     return view('plantilla');
 });
 
-/*Route::controller(UsersCtrl::class)->group(function () {
-    Route::get('/', 'login');
-});*/
-
-/*Route::controller(TareasCtrl::class)->group(function () {
-    Route::get('tareas/tareaCrear', 'crear');
-});*/
-
+Route::get('/tarea/pendientes', [TareasCtrl::class, 'verPendientes'])->name('tarea.pendientes');
+Route::get('/tarea/{tarea}/borrado', [TareasCtrl::class, 'confirmarBorrado'])->name('tarea.confirmarBorrado');
+Route::get('/tarea/{tarea}/borrar', [TareasCtrl::class, 'borrar'])->name('tarea.borrar');
+Route::get('/tarea/{tarea}/cambiarEstado', [TareasCtrl::class, 'cambiarEstado'])->name('tarea.cambiarEstado');
+Route::post('/tarea/{tarea}/completar', [TareasCtrl::class, 'completar'])->name('tarea.completar');
 Route::resource('tarea', TareasCtrl::class);

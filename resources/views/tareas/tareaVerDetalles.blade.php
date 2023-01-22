@@ -1,12 +1,12 @@
 @extends('plantilla')
 @section('cuerpo')
-<h1>Tarea {{$tarea['idtarea']}}</h1>
+<h1>Tarea {{$tarea['id']}}</h1>
 <br>
 <table class="table table-bordered table-responsive table-condensed" id="listaTareas">
     <thead class="table-dark">
         <tr>
             <th>ID Tarea</th>
-            <th>DNI</th>
+            <th>Cliente ID</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Teléfono</th>
@@ -19,8 +19,8 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{$tarea['idtarea']}}</td>
-            <td>{{$tarea['dni']}}</td>
+            <td>{{$tarea['id']}}</td>
+            <td>{{$tarea['clientes_id']}}</td>
             <td>{{$tarea['nombre']}}</td>
             <td>{{$tarea['apellidos']}}</td>
             <td>{{$tarea['telefono']}}</td>
@@ -37,13 +37,12 @@
         <tr>
             <th>Provincia</th>
             <th>Estado</th>
-            <th>ID Operario</th>
+            <th>Operario ID</th>
             <th>Fecha Creación</th>
             <th>Fecha Realización</th>
             <th>Anotaciones Anteriores</th>
             <th>Anotaciones Posteriores</th>
             <th>Fichero Adjunto</th>
-            <th>Foto Adjunta</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -51,28 +50,31 @@
         <tr>
             <td>{{$tarea['provincia']}}</td>
             <td>{{$tarea['estado']}}</td>
-            <td>{{$tarea['idusuario']}}</td>
-            <td>{{$tarea['fechacreacion']}}</td>
+            <td>{{$tarea['users_id']}}</td>
+            <td>{{$tarea['fechacreacion']->format('d/m/Y')}}</td>
+            @if($tarea['fechafin'] != null)
+            <td>{{$tarea['fechafin']->format('d/m/Y')}}</td>
+            @else
             <td>{{$tarea['fechafin']}}</td>
+            @endif
             <td>{{$tarea['anotaantes']}}</td>
             <td>{{$tarea['anotapost']}}</td>
             <td>{{$tarea['fichero']}} <br>
                 @if($tarea['fichero'] != '' && $tarea['fichero'] != NULL)
-                <a class='btn btn-primary' href="<?= BASE_URL . "archivos/" . $tarea['fichero'] ?>" download>Descargar</a>
-                @endif
-            </td>
-            <td>{{$tarea['foto']}} <br>
-                @if($tarea['foto'] != '' && $tarea['foto'] != NULL)
-                <a class='btn btn-primary' href="<?= BASE_URL . "archivos/" . $tarea['foto'] ?>" download>Descargar</a>
+                <a class='btn btn-primary' href="" download>Descargar</a>
                 @endif
             </td>
             <td>
-                <a href="index.php?controller=tareas&action=editar&id={{$tarea['idtarea']}}" class="btn btn-warning" role="button">Editar</a>
-                <a href="index.php?controller=tareas&action=confirmaEliminar&id={{$tarea['idtarea']}}" class="btn btn-danger" role="button">Borrar</a>
+                <!-- Solo muestro el boton de completar si la tarea no está realizada -->
+                @if($tarea['estado'] != 'R')
+                <a href="{{ route('tarea.cambiarEstado', $tarea) }}" class="btn btn-success" role="button">Completar</a>
+                @endif
+                <a href="{{ route('tarea.edit', $tarea) }}" class="btn btn-warning" role="button">Editar</a>
+                <a href="{{ route('tarea.confirmarBorrado', $tarea) }}" class="btn btn-danger" role="button">Borrar</a>
             </td>
         </tr>
     </tbody>
 </table>
-<h5><a href="index.php?controller=tareas&action=listar" class="btn btn-primary" role="button">Ir a Listado</a></h5>
+<h5><a href="{{ route('tarea.index') }}" class="btn btn-primary" role="button">Ir a Listado</a></h5>
 
 @endsection

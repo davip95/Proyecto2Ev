@@ -89,16 +89,16 @@
                 <input type="date" name="fechacreacion" class="form-control form-control-sm" value="<?= date('Y-m-d') ?>">
                 <br>
                 <label class="form-label">Fecha de realización</label>
-                <input type="date" name="fechafin" class="form-control form-control-sm" value="<?= isset($_POST['fechafin']) ? $_POST['fechafin'] : '' ?>">
+                <input type="date" name="fechafin" class="form-control form-control-sm" value="{{ old('fechafin') }}">
                 <br>
                 <label class="form-label">Anotaciones anteriores</label>
-                <textarea name="anotaantes" class="form-control form-control-sm" cols="10" rows="1"><?= isset($_POST['anotaantes']) ? $_POST['anotaantes'] : '' ?></textarea>
+                <textarea name="anotaantes" class="form-control form-control-sm" cols="10" rows="1">{{ old('anotaantes') }}</textarea>
                 <br>
                 <label class="form-label">Anotaciones posteriores</label>
-                <textarea name="anotapost" class="form-control form-control-sm" cols="10" rows="1"><?= isset($_POST['anotapost']) ? $_POST['anotapost'] : '' ?></textarea>
+                <textarea name="anotapost" class="form-control form-control-sm" cols="10" rows="1">{{ old('anotapost') }}</textarea>
                 <br>
                 <input class="btn btn-primary" type="submit" value="Añadir Tarea" id="añadir">
-                <br><a href="index.php?controller=tareas&action=listar" class="btn btn-danger" role="button">Volver a listado</a>
+                <br><a href="{{ route('tarea.index') }}" class="btn btn-danger" role="button">Volver a listado</a>
             </div>
         </div>
 

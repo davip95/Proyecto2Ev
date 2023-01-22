@@ -6,7 +6,7 @@
     <thead class="table-dark">
         <tr>
             <th>Fecha Creación</th>
-            <th>DNI</th>
+            <th>Cliente ID</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Teléfono</th>
@@ -20,63 +20,30 @@
     <tbody>
         @foreach ($tareas as $tarea)
         <tr>
-            <td>{{$tarea['fechacreacion']}}</td>
-            <td>{{$tarea['dni']}}</td>
+            <td>{{$tarea['fechacreacion']->format('d/m/Y')}}</td>
+            <td>{{$tarea['clientes_id']}}</td>
             <td>{{$tarea['nombre']}}</td>
             <td>{{$tarea['apellidos']}}</td>
             <td>{{$tarea['telefono']}}</td>
             <td>{{$tarea['descripcion']}}</td>
             <td>{{$tarea['poblacion']}}</td>
             <td>{{$tarea['estado']}}</td>
+            @if($tarea['fechafin'] != null)
+            <td>{{$tarea['fechafin']->format('d/m/Y')}}</td>
+            @else
             <td>{{$tarea['fechafin']}}</td>
+            @endif
             <td>
-                <a href="index.php?controller=tareas&action=ver&id={{$tarea['idtarea']}}" class="btn btn-info" role="button">Detalles</a>
-                <a href="index.php?controller=tareas&action=editar&id={{$tarea['idtarea']}}" class="btn btn-warning" role="button">Editar</a>
-                <a href="index.php?controller=tareas&action=confirmaEliminar&id={{$tarea['idtarea']}}" class="btn btn-danger" role="button">Borrar</a>
+                <a href=" {{ route('tarea.show', $tarea) }} " class="btn btn-info" role="button">Detalles</a>
+                <a href="{{ route('tarea.edit', $tarea) }}" class="btn btn-warning" role="button">Editar</a>
+                <a href="{{ route('tarea.confirmarBorrado', $tarea) }}" class="btn btn-danger" role="button">Borrar</a>
             </td>
         </tr>
         @endforeach
     </tbody>
 </table>
 
-<nav>
-    <h5><em>Páginas</em></h5>
-    <ul class="pagination">
-        <!-- Si la página actual es mayor a uno, mostramos el botón para ir una página atrás y el de ir a la primera -->
-        @if ($pagina > 1)
-        <li>
-            <a href="index.php?controller=tareas&action=listar">
-                <span>&laquo;</span>
-            </a>
-        </li>
-        <li>
-            <a href="index.php?controller=tareas&action=listar&pagina={{$pagina-1}}">
-                <span aria-hidden="true">&lt;</span>
-            </a>
-        </li>
-        @endif
-        <!-- Mostramos enlaces para ir a todas las páginas con un bucle for-->
-        @for ($x = 1; $x <= $paginas; $x++) @if ($x==$pagina) <li class="active">
-            @else
-            <li>
-                @endif
-                <a href="index.php?controller=tareas&action=listar&pagina={{$x}}">
-                    {{$x}}</a>
-            </li>
-            @endfor
-            <!-- Si la página actual es menor al total de páginas, mostramos un botón para ir una página adelante y el de ir a la última -->
-            @if ($pagina < $paginas) <li>
-                <a href="index.php?controller=tareas&action=listar&pagina={{$pagina+1}}">
-                    <span aria-hidden="true">&gt;</span>
-                </a>
-                </li>
-                <li>
-                    <a href="index.php?controller=tareas&action=listar&pagina={{$paginas}}">
-                        <span>&raquo;</span>
-                    </a>
-                </li>
-                @endif
-    </ul>
-</nav>
-<h5><em>Tareas pendientes totales: {{$conteo}}</em></h5>
+<div id="paginacion">
+    {{$tareas->links()}}
+</div>
 @endsection

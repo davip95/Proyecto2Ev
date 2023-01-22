@@ -48,3 +48,17 @@ footer {
     text-align: right;
     margin: 0;
 }
+
+#paginacion {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.small {
+    font-size: x-small;
+    margin-right: 15px;
+}
+
+.page-link {
+    font-size: small;
+}

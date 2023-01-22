@@ -36,26 +36,26 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto botonesCabecera">
                     <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="index.php?controller=tareas&action=listar" role="button"><i class="bi bi-list-task"></i> Ver Tareas</a>
+                        <a class="btn btn-dark" id="linkhead" href="{{ route('tarea.index') }}" role="button"><i class="bi bi-list-task"></i> Ver Tareas</a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-dark" id="linkhead" href="{{ route('tarea.create') }}" role="button"><i class="bi bi-clipboard2-plus"></i> Añadir Tarea</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="index.php?controller=tareas&action=verPendientes" role="button"><i class="bi bi-clock-history"></i> Tareas Pendientes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="index.php?controller=tareas&action=buscar" role="button"><i class="bi bi-search"></i> Buscar Tareas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="index.php?controller=usuarios&action=listar" role="button"><i class="bi bi-person-lines-fill"></i> Listar Usuarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="index.php?controller=usuarios&action=crearUsuario" role="button"><i class="bi bi-person-plus"></i> Añadir Usuario</a>
+                        <a class="btn btn-dark" id="linkhead" href="{{ route('tarea.pendientes') }}" role="button"><i class="bi bi-clock-history"></i> Tareas Pendientes</a>
                     </li>
                     {{-- <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="index.php?controller=usuarios&action=ver&id={{$sesion['idusuario']}}" role="button"><i class="bi bi-person-circle"></i> Mi Usuario</a>
+                        <a class="btn btn-dark" id="linkhead" href="" role="button"><i class="bi bi-search"></i> Buscar Tareas</a>
                     </li> --}}
+                    <li class="nav-item">
+                        <a class="btn btn-dark" id="linkhead" href="" role="button"><i class="bi bi-person-lines-fill"></i> Listar Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-dark" id="linkhead" href="" role="button"><i class="bi bi-person-plus"></i> Añadir Usuario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-dark" id="linkhead" href="" role="button"><i class="bi bi-person-circle"></i> Mi Usuario</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {{-- <div id="sesion">

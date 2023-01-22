@@ -1,12 +1,12 @@
 @extends('plantilla')
 @section('cuerpo')
-<h1>Completar Tarea {{$tarea['idtarea']}}</h1>
+<h1>Completar Tarea {{$tarea['id']}}</h1>
 <br>
 <table class="table table-bordered table-responsive table-condensed" id="listaTareas">
     <thead class="table-dark">
         <tr>
             <th>ID Tarea</th>
-            <th>DNI</th>
+            <th>Cliente ID</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Teléfono</th>
@@ -16,8 +16,8 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{$tarea['idtarea']}}</td>
-            <td>{{$tarea['dni']}}</td>
+            <td>{{$tarea['id']}}</td>
+            <td>{{$tarea['clientes_id']}}</td>
             <td>{{$tarea['nombre']}}</td>
             <td>{{$tarea['apellidos']}}</td>
             <td>{{$tarea['telefono']}}</td>
@@ -45,13 +45,22 @@
             <td>{{$tarea['codpostal']}}</td>
             <td>{{$tarea['provincia']}}</td>
             <td>{{$tarea['idusuario']}}</td>
-            <td>{{$tarea['fechacreacion']}}</td>
+            <td>{{$tarea['fechacreacion']->format('d/m/Y')}}</td>
             <td>{{$tarea['anotaantes']}}</td>
         </tr>
     </tbody>
 </table>
 <div class="formulario">
-    <form enctype="multipart/form-data" method="POST">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li><br>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+    <form action=" {{ route('tarea.completar', $tarea) }}" method="POST">
         <div class="padrecolumnas">
             <div class="columnacampos">
                 <label class="form-label">Estado</label><br>
@@ -72,26 +81,21 @@
                     <label class="form-check-label" for="cancelada">C</label>
                 </div>
                 <div class="form-text info">B: Esperando ser aprobada. P: Pendiente. R: Realizada. C: Cancelada</div>
-                {!!$error->ErrorFormateado('estado')!!}
             </div>
             <div class="columnacampos">
                 <label class="form-label">Fecha de realización</label><br>
                 <input type="date" name="fechafin" class="form-control form-control-sm" value="<?= date('Y-m-d') ?>">
-                {!!$error->ErrorFormateado('fechafin')!!}<br>
+                <br>
                 <label class="form-label">Anotaciones posteriores</label><br>
                 <textarea name="anotapost" class="form-control form-control-sm" cols="10" rows="1">{{$tarea['anotapost']}}</textarea>
             </div>
             <div class="columnacampos">
-                <label class="form-label">Fichero resumen</label><br>
-                <input type="file" name="fichero" class="form-control form-control-sm" id="formFileSm"><br>
-
-                <label class="form-label">Foto del trabajo</label><br>
-                <input type="file" name="foto" class="form-control form-control-sm" id="formFileSm">
-            </div>
-            <div class="columnacampos">
-                <br><br><br><br>
+                <label class="form-label">Fichero resumen</label>
+                <br>
+                <input type="file" name="fichero" class="form-control form-control-sm" id="formFileSm">
+                <br>
                 <input class="btn btn-success" type="submit" value="Confirmar Cambios" id="añadir">
-                <br><a href="index.php?controller=tareas&action=ver&id={{$tarea['idtarea']}}" class="btn btn-danger" role="button">Cancelar Cambios</a>
+                <br><a href=" {{ route('tarea.show', $tarea) }} " class="btn btn-danger" role="button">Cancelar Cambios</a>
             </div>
         </div>
     </form>
