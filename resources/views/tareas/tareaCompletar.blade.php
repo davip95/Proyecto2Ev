@@ -6,7 +6,7 @@
     <thead class="table-dark">
         <tr>
             <th>ID Tarea</th>
-            <th>Cliente ID</th>
+            <th>Cliente</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Teléfono</th>
@@ -17,7 +17,7 @@
     <tbody>
         <tr>
             <td>{{$tarea['id']}}</td>
-            <td>{{$tarea['clientes_id']}}</td>
+            <td>{{$tarea->clientes->nombre}}</td>
             <td>{{$tarea['nombre']}}</td>
             <td>{{$tarea['apellidos']}}</td>
             <td>{{$tarea['telefono']}}</td>
@@ -33,7 +33,7 @@
             <th>Población</th>
             <th>Código Postal</th>
             <th>Provincia</th>
-            <th>ID Operario</th>
+            <th>Operario</th>
             <th>Fecha Creación</th>
             <th>Anotaciones Anteriores</th>
         </tr>
@@ -44,8 +44,8 @@
             <td>{{$tarea['poblacion']}}</td>
             <td>{{$tarea['codpostal']}}</td>
             <td>{{$tarea['provincia']}}</td>
-            <td>{{$tarea['idusuario']}}</td>
-            <td>{{$tarea['fechacreacion']->format('d/m/Y')}}</td>
+            <td>{{$tarea->users->name}}</td>
+            <td>{{$tarea['fechacreacion']->format('d/m/Y H:i')}}</td>
             <td>{{$tarea['anotaantes']}}</td>
         </tr>
     </tbody>
@@ -61,6 +61,8 @@
     </div>
     @endif
     <form action=" {{ route('tarea.completar', $tarea) }}" method="POST">
+        @method('put')
+        {{-- @csrf --}}
         <div class="padrecolumnas">
             <div class="columnacampos">
                 <label class="form-label">Estado</label><br>
@@ -84,7 +86,7 @@
             </div>
             <div class="columnacampos">
                 <label class="form-label">Fecha de realización</label><br>
-                <input type="date" name="fechafin" class="form-control form-control-sm" value="<?= date('Y-m-d') ?>">
+                <input type="datetime-local" name="fechafin" class="form-control form-control-sm" value="<?= date('Y-m-d\TH:i') ?>">
                 <br>
                 <label class="form-label">Anotaciones posteriores</label><br>
                 <textarea name="anotapost" class="form-control form-control-sm" cols="10" rows="1">{{$tarea['anotapost']}}</textarea>

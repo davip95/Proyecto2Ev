@@ -11,7 +11,7 @@ class Cuota extends Model
     protected $table = 'cuotas';
     public $timestamps = false;
 
-    public function cliente()
+    public function clientes()
     {
         return $this->belongsTo(Cliente::class);
     }

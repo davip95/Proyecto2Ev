@@ -6,7 +6,7 @@
     <thead class="table-dark">
         <tr>
             <th>ID Tarea</th>
-            <th>Cliente ID</th>
+            <th>Cliente</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Teléfono</th>
@@ -20,7 +20,7 @@
     <tbody>
         <tr>
             <td>{{$tarea['id']}}</td>
-            <td>{{$tarea['clientes_id']}}</td>
+            <td>{{$tarea->clientes->nombre}}</td>
             <td>{{$tarea['nombre']}}</td>
             <td>{{$tarea['apellidos']}}</td>
             <td>{{$tarea['telefono']}}</td>
@@ -37,7 +37,7 @@
         <tr>
             <th>Provincia</th>
             <th>Estado</th>
-            <th>Operario ID</th>
+            <th>Operario</th>
             <th>Fecha Creación</th>
             <th>Fecha Realización</th>
             <th>Anotaciones Anteriores</th>
@@ -50,10 +50,10 @@
         <tr>
             <td>{{$tarea['provincia']}}</td>
             <td>{{$tarea['estado']}}</td>
-            <td>{{$tarea['users_id']}}</td>
-            <td>{{$tarea['fechacreacion']->format('d/m/Y')}}</td>
+            <td>{{$tarea->users->name}}</td>
+            <td>{{$tarea['fechacreacion']->format('d/m/Y H:i')}}</td>
             @if($tarea['fechafin'] != null)
-            <td>{{$tarea['fechafin']->format('d/m/Y')}}</td>
+            <td>{{$tarea['fechafin']->format('d/m/Y H:i')}}</td>
             @else
             <td>{{$tarea['fechafin']}}</td>
             @endif

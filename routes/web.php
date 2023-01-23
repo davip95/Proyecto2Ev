@@ -23,5 +23,5 @@ Route::get('/tarea/pendientes', [TareasCtrl::class, 'verPendientes'])->name('tar
 Route::get('/tarea/{tarea}/borrado', [TareasCtrl::class, 'confirmarBorrado'])->name('tarea.confirmarBorrado');
 Route::get('/tarea/{tarea}/borrar', [TareasCtrl::class, 'borrar'])->name('tarea.borrar');
 Route::get('/tarea/{tarea}/cambiarEstado', [TareasCtrl::class, 'cambiarEstado'])->name('tarea.cambiarEstado');
-Route::post('/tarea/{tarea}/completar', [TareasCtrl::class, 'completar'])->name('tarea.completar');
+Route::put('/tarea/{tarea}/completar', [TareasCtrl::class, 'completar'])->name('tarea.completar');
 Route::resource('tarea', TareasCtrl::class);

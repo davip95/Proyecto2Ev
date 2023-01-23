@@ -31,12 +31,12 @@ class Tarea extends Model
     ];
     protected $dates = ['fechacreacion', 'fechafin'];
 
-    public function cliente()
+    public function clientes()
     {
         return $this->belongsTo(Cliente::class);
     }
 
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class);
     }

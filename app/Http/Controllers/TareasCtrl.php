@@ -42,6 +42,9 @@ class TareasCtrl extends Controller
      */
     public function store(Request $request)
     {
+        $fechaCreacion = $request->fechacreacion;
+        $estado = $request->estado;
+        $fechaFin = $request->fechafin;
         $datos = $request->validate([
             'clientes_id' => ['required', 'max:45'],
             'nombre' => ['required', 'max:45'],
@@ -53,18 +56,37 @@ class TareasCtrl extends Controller
             'poblacion' => ['required', 'max:45'],
             'codpostal' => ['required', 'max:45', 'regex:/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/'],
             'provincia' => ['required', 'max:45'],
-            'estado' => ['required', 'max:45'],
+            'estado' => [
+                'required', 'max:45',
+                function ($attribute, $value, $fail) use ($fechaFin) {
+                    if ($value == 'R' && $fechaFin == null) {
+                        $fail('No puede marcar la tarea Realizada (R) sin una fecha de realización.');
+                    }
+                }
+            ],
             'users_id' => ['required', 'max:45'],
-            'fechacreacion' => ['required', 'max:45', 'date_equals:today'],
-            'fechafin' => ['nullable', 'exclude_unless:estado,R', 'after:fechacracion'],
+            'fechacreacion' => [
+                'required', 'date_format:Y-m-d\TH:i',
+                function ($attribute, $value, $fail) {
+                    if ($value != date("Y-m-d\TH:i")) {
+                        $fail('La fecha de creación no se puede modificar.');
+                    }
+                },
+            ],
+            'fechafin' => [
+                'nullable', 'date_format:Y-m-d\TH:i',
+                function ($attribute, $value, $fail) use ($fechaCreacion, $estado) {
+                    if ($value <= $fechaCreacion) {
+                        $fail('La fecha de realización debe ser posterior a la de creación.');
+                    }
+                    if ($value != null && $estado != 'R') {
+                        $fail('Para introducir una fecha de realización el estado debe ser Realizada (R).');
+                    }
+                }
+            ],
             'anotaantes' => ['nullable', 'max:100'],
             'anotapost' => ['nullable', 'max:100'],
         ]);
-        // Guardo la fecha de creacion en formato fecha y hora para el datetime de la base de datos
-        $datos['fechacreacion'] = date("Y-m-d H:i:s");
-        // Si existe la fecha de finalizacion, la guardo en formato fecha y hora
-        if ($datos['fechacreacion'] != null)
-            $datos['fechacreacion'] = date("Y-m-d H:i:s");
         $tarea = Tarea::create($datos);
         return view('tareas.tareaVerDetalles', compact('tarea'));
     }
@@ -105,8 +127,9 @@ class TareasCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Hacer query para sacar la fecha de creacion de la tarea y forzar a que el campo fechacreacion en la validación
-        // sea igual a la fecha de creacion obtenida de la query --> FALTA ESTO
+        $fechaCreacion = Tarea::find($id)->fechacreacion;
+        $fechaFin = $request->fechafin;
+        $estado = $request->estado;
         $datos = $request->validate([
             'clientes_id' => ['required', 'max:45'],
             'nombre' => ['required', 'max:45'],
@@ -118,18 +141,34 @@ class TareasCtrl extends Controller
             'poblacion' => ['required', 'max:45'],
             'codpostal' => ['required', 'max:45', 'regex:/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/'],
             'provincia' => ['required', 'max:45'],
-            'estado' => ['required', 'max:45'],
+            'estado' => [
+                'required', 'max:45',
+                function ($attribute, $value, $fail) use ($fechaFin) {
+                    if ($value == 'R' && $fechaFin == null) {
+                        $fail('No puede marcar la tarea Realizada (R) sin una fecha de realización.');
+                    }
+                }
+            ],
             'users_id' => ['required', 'max:45'],
-            'fechacreacion' => ['required', 'max:45'],
-            'fechafin' => ['nullable', 'exclude_unless:estado,R', 'after:fechacracion'],
+            'fechacreacion' => ['required', 'max:45', function ($attribute, $value, $fail) use ($fechaCreacion) {
+                if ($value != $fechaCreacion) {
+                    $fail('La fecha de creación no se puede modificar.');
+                }
+            }],
+            'fechafin' => [
+                'nullable', 'date_format:Y-m-d\TH:i',
+                function ($attribute, $value, $fail) use ($fechaCreacion, $estado) {
+                    if ($value <= $fechaCreacion) {
+                        $fail('La fecha de realización debe ser posterior a la de creación.');
+                    }
+                    if ($value != null && $estado != 'R') {
+                        $fail('Para introducir una fecha de realización el estado debe ser Realizada (R).');
+                    }
+                }
+            ],
             'anotaantes' => ['nullable', 'max:100'],
             'anotapost' => ['nullable', 'max:100'],
         ]);
-        // Guardo la fecha de creacion en formato fecha y hora para el datetime de la base de datos
-        $datos['fechacreacion'] = date("Y-m-d H:i:s");
-        // Si existe la fecha de finalizacion, la guardo en formato fecha y hora
-        if ($datos['fechacreacion'] != null)
-            $datos['fechacreacion'] = date("Y-m-d H:i:s");
         Tarea::find($id)->update($datos);
         $tarea = Tarea::find($id);
         return view('tareas.tareaVerDetalles', compact('tarea'));
@@ -143,9 +182,7 @@ class TareasCtrl extends Controller
      */
     public function destroy($id)
     {
-        $tarea = Tarea::find($id);
-        $tarea->delete();
-        return view('tareas.tareaEliminada', compact('id'));
+        // SOLO CON SOFTDELETE
     }
 
     public function verPendientes()
@@ -173,7 +210,31 @@ class TareasCtrl extends Controller
         return view('tareas.tareaCompletar', compact('tarea'));
     }
 
-    public function completar($id)
+    public function completar(Request $request, $id)
     {
+        $tarea = Tarea::find($id);
+        $fechaCreacion = $tarea->fechacreacion;
+        $datos = $request->validate([
+            'estado' => [
+                'required', 'max:45',
+                function ($attribute, $value, $fail) {
+                    if ($value != 'R') {
+                        $fail('Para completar la tarea el estado debe ser Realizada (R).');
+                    }
+                },
+            ],
+            'fechafin' => [
+                'required', 'date_format:Y-m-d\TH:i',
+                function ($attribute, $value, $fail) use ($fechaCreacion) {
+                    if ($value <= $fechaCreacion) {
+                        $fail('La fecha de realización debe ser posterior a la de creación.');
+                    }
+                }
+            ],
+            'anotaantes' => ['nullable', 'max:100'],
+            'anotapost' => ['nullable', 'max:100'],
+        ]);
+        $tarea->update($datos);
+        return view('tareas.tareaVerDetalles', compact('tarea'));
     }
 }

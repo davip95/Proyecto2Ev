@@ -87,10 +87,10 @@
                 </select>              
                 <br>
                 <label class="form-label">Fecha de creación de tarea</label>
-                <input type="date" name="fechacreacion" class="form-control form-control-sm" value="{{ old('fechacreacion', $tarea->fechacreacion->format('Y-m-d')) }}">
+                <input type="datetime-local" name="fechacreacion" class="form-control form-control-sm" value="{{ $tarea->fechacreacion->format('Y-m-d\TH:i') }}">
                 <br>
                 <label class="form-label">Fecha de realización</label>
-                <input type="date" name="fechafin" class="form-control form-control-sm" value="{{ old('fechafin', is_null($tarea->fechafin) ? '' : $tarea->fechafin->format('Y-m-d')) }}">
+                <input type="datetime-local" name="fechafin" class="form-control form-control-sm" value="{{ old('fechafin', is_null($tarea->fechafin) ? '' : $tarea->fechafin->format('Y-m-d\TH:i')) }}">
                 <br>
                 <label class="form-label">Anotaciones anteriores</label>
                 <textarea name="anotaantes" class="form-control form-control-sm" cols="10" rows="1">{{ old('anotaantes', $tarea->anotaantes) }}</textarea>
