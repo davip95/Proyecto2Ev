@@ -62,3 +62,8 @@ footer {
 .page-link {
     font-size: small;
 }
+
+small {
+    color: red;
+    font-weight: bold;
+}

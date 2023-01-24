@@ -150,11 +150,14 @@ class TareasCtrl extends Controller
                 }
             ],
             'users_id' => ['required', 'max:45'],
-            'fechacreacion' => ['required', 'max:45', function ($attribute, $value, $fail) use ($fechaCreacion) {
-                if ($value != $fechaCreacion) {
-                    $fail('La fecha de creación no se puede modificar.');
+            'fechacreacion' => [
+                'required', 'max:45',
+                function ($attribute, $value, $fail) use ($fechaCreacion) {
+                    if ($value != $fechaCreacion) {
+                        $fail('La fecha de creación no se puede modificar.');
+                    }
                 }
-            }],
+            ],
             'fechafin' => [
                 'nullable', 'date_format:Y-m-d\TH:i',
                 function ($attribute, $value, $fail) use ($fechaCreacion, $estado) {
@@ -199,6 +202,7 @@ class TareasCtrl extends Controller
 
     public function borrar($id)
     {
+        // COMPROBAR QUE SE BORRA EL FICHERO, Y SI NO ES ASÍ, AÑADIR SU BORRADO!!!
         $tarea = Tarea::find($id);
         $tarea->delete();
         return view('tareas.tareaEliminada', compact('id'));
@@ -212,6 +216,7 @@ class TareasCtrl extends Controller
 
     public function completar(Request $request, $id)
     {
+        // AÑADIR VALIDACION DEL FICHERO!!!
         $tarea = Tarea::find($id);
         $fechaCreacion = $tarea->fechacreacion;
         $datos = $request->validate([
@@ -231,7 +236,6 @@ class TareasCtrl extends Controller
                     }
                 }
             ],
-            'anotaantes' => ['nullable', 'max:100'],
             'anotapost' => ['nullable', 'max:100'],
         ]);
         $tarea->update($datos);

@@ -51,7 +51,7 @@
     </tbody>
 </table>
 <div class="formulario">
-    @if ($errors->any())
+    {{-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -59,7 +59,7 @@
             @endforeach
         </ul>
     </div>
-    @endif
+    @endif --}}
     <form action=" {{ route('tarea.completar', $tarea) }}" method="POST">
         @method('put')
         {{-- @csrf --}}
@@ -67,34 +67,46 @@
             <div class="columnacampos">
                 <label class="form-label">Estado</label><br>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="estado" id="espera" value="B">
+                    <input class="form-check-input @error('estado') is-invalid @enderror" type="radio" name="estado" id="espera" value="B">
                     <label class="form-check-label" for="espera">B</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="estado" id="espera" value="P">
+                    <input class="form-check-input @error('estado') is-invalid @enderror" type="radio" name="estado" id="espera" value="P">
                     <label class="form-check-label" for="espera">P</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="estado" id="espera" value="R" checked>
+                    <input class="form-check-input @error('estado') is-invalid @enderror" type="radio" name="estado" id="espera" value="R" checked>
                     <label class="form-check-label" for="realizada">R</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="estado" id="espera" value="C">
+                    <input class="form-check-input @error('estado') is-invalid @enderror" type="radio" name="estado" id="espera" value="C">
                     <label class="form-check-label" for="cancelada">C</label>
                 </div>
                 <div class="form-text info">B: Esperando ser aprobada. P: Pendiente. R: Realizada. C: Cancelada</div>
+                @error('estado')  
+                <small>{{ $message }}</small>
+                @enderror
             </div>
             <div class="columnacampos">
                 <label class="form-label">Fecha de realización</label><br>
-                <input type="datetime-local" name="fechafin" class="form-control form-control-sm" value="<?= date('Y-m-d\TH:i') ?>">
+                <input type="datetime-local" name="fechafin" class="form-control form-control-sm @error('fechafin') is-invalid @enderror" value="<?= date('Y-m-d\TH:i') ?>">
+                @error('fechafin')  
+                <small>{{ $message }}</small>
+                @enderror
                 <br>
                 <label class="form-label">Anotaciones posteriores</label><br>
-                <textarea name="anotapost" class="form-control form-control-sm" cols="10" rows="1">{{$tarea['anotapost']}}</textarea>
+                <textarea name="anotapost" class="form-control form-control-sm @error('anotapost') is-invalid @enderror" cols="10" rows="1">{{old('anotapost', $tarea->anotapost)}}</textarea>
+                @error('anotapost')  
+                <small>{{ $message }}</small>
+                @enderror
             </div>
             <div class="columnacampos">
                 <label class="form-label">Fichero resumen</label>
                 <br>
-                <input type="file" name="fichero" class="form-control form-control-sm" id="formFileSm">
+                <input type="file" name="fichero" class="form-control form-control-sm @error('fichero') is-invalid @enderror" id="formFileSm">
+                @error('fichero')  
+                <small>{{ $message }}</small>
+                @enderror
                 <br>
                 <input class="btn btn-success" type="submit" value="Confirmar Cambios" id="añadir">
                 <br><a href=" {{ route('tarea.show', $tarea) }} " class="btn btn-danger" role="button">Cancelar Cambios</a>
