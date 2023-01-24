@@ -22,6 +22,9 @@
                     <option value="{{$cliente['id']}}" @selected(old('clientes_id') == $cliente['id'])>{{$cliente["nombre"]}}</option>
                     @endforeach
                 </select>
+                @error('clientes_id')  
+                <small style="color: red">{{ $message }}</small>
+                @enderror
                 <br>
                 <label class="form-label">Nombre de contacto</label>
                 <input type="text" name="nombre" class="form-control form-control-sm @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}">

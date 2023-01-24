@@ -12,8 +12,9 @@ return [
     | you want to customize your views to better match your application.
     |
     */
-
-    'previous' => '&laquo; Anterior',
-    'next'     => 'Siguiente &raquo;',
+    'last' => '&raquo',
+    'first' => '&laquo',
+    'previous' => 'Anterior',
+    'next'     => 'Siguiente',
 
 ];
