@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Provincia;
 use App\Models\Cliente;
@@ -68,7 +69,7 @@ class TareasCtrl extends Controller
             'fechacreacion' => [
                 'required', 'date_format:Y-m-d\TH:i',
                 function ($attribute, $value, $fail) {
-                    if ($value != date("Y-m-d\TH:i")) {
+                    if (date("Y-m-d\TH", strtotime($value)) != date("Y-m-d\TH")) {
                         $fail('La fecha de creación no se puede modificar.');
                     }
                 },
@@ -100,6 +101,11 @@ class TareasCtrl extends Controller
     public function show($id)
     {
         $tarea = Tarea::find($id);
+        // Genero la url del fichero asociado a la tarea (si existe) para poder descargarse desde la vista en detalle
+        if ($tarea->fichero != '' || $tarea->fichero == null) {
+            $url = Storage::url('ficheros/' . $tarea->fichero);
+            return view('tareas.tareaVerDetalles', compact('tarea', 'url'));
+        }
         return view('tareas.tareaVerDetalles', compact('tarea'));
     }
 
@@ -127,7 +133,7 @@ class TareasCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
-        $fechaCreacion = Tarea::find($id)->fechacreacion;
+        $fechaCreacion = Tarea::find($id)->fechacreacion->format('Y-m-d\TH:i');
         $fechaFin = $request->fechafin;
         $estado = $request->estado;
         $datos = $request->validate([
@@ -197,15 +203,22 @@ class TareasCtrl extends Controller
     public function confirmarBorrado($id)
     {
         $tarea = Tarea::find($id);
+        // Genero la url del fichero asociado a la tarea (si existe) para poder descargarse desde la vista en detalle
+        if ($tarea->fichero != '' || $tarea->fichero == null) {
+            $url = Storage::url('ficheros/' . $tarea->fichero);
+            return view('tareas.tareaEliminar', compact('tarea', 'url'));
+        }
         return view('tareas.tareaEliminar', compact('tarea'));
     }
 
-    public function borrar($id)
+    public function borrar(Request $request)
     {
-        // COMPROBAR QUE SE BORRA EL FICHERO, Y SI NO ES ASÍ, AÑADIR SU BORRADO!!!
-        $tarea = Tarea::find($id);
+        $tarea = Tarea::find($request->id);
+        // Primero, borro el fichero asociado a la tarea (si existe)
+        if ($tarea->fichero != '' || $tarea->fichero == null)
+            Storage::disk('public')->delete('ficheros/' . $tarea->fichero);
         $tarea->delete();
-        return view('tareas.tareaEliminada', compact('id'));
+        return view('tareas.tareaEliminada', ['id' => $request->id]);
     }
 
     public function cambiarEstado($id)
@@ -216,8 +229,8 @@ class TareasCtrl extends Controller
 
     public function completar(Request $request, $id)
     {
-        // AÑADIR VALIDACION DEL FICHERO!!!
         $tarea = Tarea::find($id);
+        // Guardo en una variable la fecha de creacion para usarla en la closure de la validacion de la fecha de realización
         $fechaCreacion = $tarea->fechacreacion;
         $datos = $request->validate([
             'estado' => [
@@ -237,8 +250,21 @@ class TareasCtrl extends Controller
                 }
             ],
             'anotapost' => ['nullable', 'max:100'],
+            'fichero' => ['nullable', 'file', 'max:10240'],
         ]);
+        // Almaceno el fichero (si se ha subido) dentro de la carpeta ficheros en el directorio storage/public con el nombre 
+        // original precedido del id de la tarea y guión bajo
+        if ($request->hasFile('fichero') && $request->file('fichero')->isValid()) {
+            $request->file('fichero')->storeAs('ficheros', $id . "_" . $request->fichero->getClientOriginalName(), 'public');
+            // Para guardar el fichero en la base de datos, guardo sólo el nombre con el que se ha almacenado
+            $datos['fichero'] = $id . "_" . $request->fichero->getClientOriginalName();
+        }
         $tarea->update($datos);
+        // Una vez completada, muestro la tarea en detalle
+        if ($tarea->fichero != '' || $tarea->fichero == null) {
+            $url = Storage::url('ficheros/' . $tarea->fichero);
+            return view('tareas.tareaVerDetalles', compact('tarea', 'url'));
+        }
         return view('tareas.tareaVerDetalles', compact('tarea'));
     }
 }

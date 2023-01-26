@@ -51,16 +51,7 @@
     </tbody>
 </table>
 <div class="formulario">
-    {{-- @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li><br>
-            @endforeach
-        </ul>
-    </div>
-    @endif --}}
-    <form action=" {{ route('tarea.completar', $tarea) }}" method="POST">
+    <form action=" {{ route('tarea.completar', $tarea) }}" method="POST" enctype="multipart/form-data">
         @method('put')
         {{-- @csrf --}}
         <div class="padrecolumnas">

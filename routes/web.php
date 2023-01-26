@@ -3,6 +3,7 @@
 use App\Http\Controllers\LoginCtrl;
 use App\Http\Controllers\TareasCtrl;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\TextUI\XmlConfiguration\Group;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +20,15 @@ Route::get('/', function () {
     return view('plantilla');
 });
 
-Route::get('/tarea/pendientes', [TareasCtrl::class, 'verPendientes'])->name('tarea.pendientes');
-Route::get('/tarea/{tarea}/borrado', [TareasCtrl::class, 'confirmarBorrado'])->name('tarea.confirmarBorrado');
-Route::get('/tarea/{tarea}/borrar', [TareasCtrl::class, 'borrar'])->name('tarea.borrar');
-Route::get('/tarea/{tarea}/cambiarEstado', [TareasCtrl::class, 'cambiarEstado'])->name('tarea.cambiarEstado');
-Route::put('/tarea/{tarea}/completar', [TareasCtrl::class, 'completar'])->name('tarea.completar');
+
+Route::controller(TareasCtrl::class)->group(function () {
+    Route::get('/tarea/pendientes', 'verPendientes')->name('tarea.pendientes');
+    Route::get('/tarea/{id}/borrado', 'confirmarBorrado')->name('tarea.confirmarBorrado');
+    Route::post('/tarea/{id}/borrar', 'borrar')->name('tarea.borrar');
+    // Con la siguiente ruta compruebo si trata de acceder a la url manualmente sin pasar por el formulario de confirmacion de borrado
+    // Si lo intenta, redirige al listado de tareas
+    Route::get('/tarea/{id}/borrar', 'index')->name('tarea.borrar');
+    Route::get('/tarea/{id}/cambiarEstado', 'cambiarEstado')->name('tarea.cambiarEstado');
+    Route::put('/tarea/{id}/completar', 'completar')->name('tarea.completar');
+});
 Route::resource('tarea', TareasCtrl::class);

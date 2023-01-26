@@ -7,12 +7,12 @@
         <tr>
             <th>Fecha Creación</th>
             <th>Cliente</th>
-            <th>Nombre</th>
-            <th>Apellidos</th>
+            <th>Contacto</th>
             <th>Teléfono</th>
             <th>Descripción</th>
             <th>Población</th>
             <th>Estado</th>
+            <th>Operario</th>
             <th>Fecha Realización</th>
             <th>Acciones</th>
         </tr>
@@ -23,11 +23,11 @@
             <td>{{$tarea['fechacreacion']->format('d/m/Y H:i')}}</td>
             <td>{{$tarea->clientes->nombre}}</td>
             <td>{{$tarea['nombre']}}</td>
-            <td>{{$tarea['apellidos']}}</td>
             <td>{{$tarea['telefono']}}</td>
             <td>{{$tarea['descripcion']}}</td>
             <td>{{$tarea['poblacion']}}</td>
             <td>{{$tarea['estado']}}</td>
+            <td>{{$tarea->users->name}}</td>
             @if($tarea['fechafin'] != null)
             <td>{{$tarea['fechafin']->format('d/m/Y H:i')}}</td>
             @else

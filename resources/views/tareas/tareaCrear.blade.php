@@ -122,7 +122,7 @@
                 @enderror
                 <br>
                 <label class="form-label">Fecha de creación de tarea</label>
-                <input type="datetime-local" name="fechacreacion" class="form-control form-control-sm" value="<?= date('Y-m-d\TH:i') ?>">
+                <input type="datetime-local" name="fechacreacion" class="form-control form-control-sm @error('fechacreacion') is-invalid @enderror" value="<?= date('Y-m-d\TH:i') ?>">
                 @error('fechacreacion')  
                 <small>{{ $message }}</small>
                 @enderror

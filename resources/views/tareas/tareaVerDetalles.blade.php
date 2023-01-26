@@ -7,7 +7,7 @@
         <tr>
             <th>ID Tarea</th>
             <th>Cliente</th>
-            <th>Nombre</th>
+            <th>Contacto</th>
             <th>Apellidos</th>
             <th>Teléfono</th>
             <th>Descripción</th>
@@ -59,9 +59,9 @@
             @endif
             <td>{{$tarea['anotaantes']}}</td>
             <td>{{$tarea['anotapost']}}</td>
-            <td>{{$tarea['fichero']}} <br>
+            <td>{{$tarea['fichero']}}&nbsp;
                 @if($tarea['fichero'] != '' && $tarea['fichero'] != NULL)
-                <a class='btn btn-primary' href="" download>Descargar</a>
+                <a class='btn btn-primary' href="{{ $url }}" download>Descargar</a>
                 @endif
             </td>
             <td>
@@ -75,6 +75,6 @@
         </tr>
     </tbody>
 </table>
-<h5><a href="{{ route('tarea.index') }}" class="btn btn-primary" role="button">Ir a Listado</a></h5>
+<h5><a href="{{ route('tarea.index') }}" class="btn btn-primary" role="button">Volver a listado</a></h5>
 
 @endsection

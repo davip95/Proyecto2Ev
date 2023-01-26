@@ -2,15 +2,6 @@
 @section('cuerpo')
 <h1>Modificar tarea {{$tarea['id']}}</h1>
 <div class="formulario">
-    {{-- @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li><br>
-            @endforeach
-        </ul>
-    </div>
-    @endif --}}
     <form action=" {{ route('tarea.update', $tarea) }}" method="POST">
         @method('put')
         {{-- @csrf --}}
@@ -150,7 +141,6 @@
                 <br><a href=" {{ route('tarea.show', $tarea) }} " class="btn btn-danger" role="button">Cancelar Cambios</a>
             </div>
         </div>
-
     </form>
 </div>
 @endsection
