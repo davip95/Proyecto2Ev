@@ -179,8 +179,7 @@ class TareasCtrl extends Controller
             'anotapost' => ['nullable', 'max:100'],
         ]);
         Tarea::find($id)->update($datos);
-        $tarea = Tarea::find($id);
-        return view('tareas.tareaVerDetalles', compact('tarea'));
+        return $this->show($id);
     }
 
     /**
@@ -261,10 +260,11 @@ class TareasCtrl extends Controller
         }
         $tarea->update($datos);
         // Una vez completada, muestro la tarea en detalle
-        if ($tarea->fichero != '' || $tarea->fichero == null) {
-            $url = Storage::url('ficheros/' . $tarea->fichero);
-            return view('tareas.tareaVerDetalles', compact('tarea', 'url'));
-        }
-        return view('tareas.tareaVerDetalles', compact('tarea'));
+        return $this->show($id);
+        // if ($tarea->fichero != '' || $tarea->fichero == null) {
+        //     $url = Storage::url('ficheros/' . $tarea->fichero);
+        //     return view('tareas.tareaVerDetalles', compact('tarea', 'url'));
+        // }
+        // return view('tareas.tareaVerDetalles', compact('tarea'));
     }
 }
