@@ -65,8 +65,8 @@
                 @endif
             </td>
             <td>
-                <!-- Solo muestro el boton de completar si la tarea no está realizada -->
-                @if($tarea['estado'] != 'R')
+                <!-- Solo muestro el boton de completar si la tarea no está realizada ni cancelada -->
+                @if($tarea['estado'] != 'R' && $tarea['estado'] != 'C')
                 <a href="{{ route('tarea.cambiarEstado', $tarea) }}" class="btn btn-success" role="button">Completar</a>
                 @endif
                 <a href="{{ route('tarea.edit', $tarea) }}" class="btn btn-warning" role="button">Editar</a>

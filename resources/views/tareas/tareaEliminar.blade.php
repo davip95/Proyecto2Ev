@@ -67,16 +67,15 @@
     </tbody>
 </table>
 <div class="alert alert-danger aletarborrar" role="alert"><strong>Esta operación es irreversible. Asegúrese de que quiere eliminar la tarea antes de confirmarlo.</strong></div>
-<h5><a href=" {{ route('tarea.show', $tarea) }} " class="btn btn-danger" role="button"><i class="bi bi-x-square"></i> Cancelar Borrado</a></h5>
+<h5><a href=" {{ route('tarea.show', $tarea) }} " class="btn btn-success" role="button"><i class="bi bi-x-square"></i> Cancelar Borrado</a></h5>
 <br>
 <form action="{{ route('tarea.borrar', $tarea) }}" method="post">
-    <button class="btn btn-success" type="submit"><i class="bi bi-check-square"></i> Confirmar Borrado</button>
+    <button class="btn btn-danger" type="submit"><i class="bi bi-check-square"></i> Confirmar Borrado</button>
 </form>
 {{-- <form action="{{ route('tarea.destroy', $tarea) }}"> --}}
     {{-- @csrf --}}
     {{-- @method('delete') --}}
-    {{-- <button class="btn btn-success" type="submit"><i class="bi bi-check-square"></i> Confirmar Borrado</button> --}}
+    {{-- <button class="btn btn-danger" type="submit"><i class="bi bi-check-square"></i> Confirmar Borrado</button> --}}
 {{-- </form> --}}
-{{-- <h5><a href=" {{ route('tarea.borrar', $tarea) }} " class="btn btn-success" role="button"><i class="bi bi-check-square"></i> Confirmar Borrado</a></h5> --}}
 
 @endsection

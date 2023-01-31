@@ -145,8 +145,8 @@
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
-                <input class="btn btn-primary" type="submit" value="Añadir Tarea" id="añadir">
-                <br><a href="{{ route('tarea.index') }}" class="btn btn-danger" role="button">Volver a listado</a>
+                <input class="btn btn-success" type="submit" value="Añadir Tarea" id="añadir">
+                <br><a href="{{ route('tarea.index') }}" class="btn btn-danger" role="button">Cancelar Creación</a>
             </div>
         </div>
 
