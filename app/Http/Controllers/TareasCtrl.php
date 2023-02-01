@@ -190,7 +190,12 @@ class TareasCtrl extends Controller
      */
     public function destroy($id)
     {
-        // SOLO CON SOFTDELETE
+        $tarea = Tarea::find($id);
+        // Primero, borro el fichero asociado a la tarea (si existe)
+        if ($tarea->fichero != '' || $tarea->fichero == null)
+            Storage::disk('public')->delete('ficheros/' . $tarea->fichero);
+        $tarea->delete();
+        return view('tareas.tareaEliminada', ['id' => $id]);
     }
 
     public function verPendientes()
@@ -210,15 +215,15 @@ class TareasCtrl extends Controller
         return view('tareas.tareaEliminar', compact('tarea'));
     }
 
-    public function borrar(Request $request)
-    {
-        $tarea = Tarea::find($request->id);
-        // Primero, borro el fichero asociado a la tarea (si existe)
-        if ($tarea->fichero != '' || $tarea->fichero == null)
-            Storage::disk('public')->delete('ficheros/' . $tarea->fichero);
-        $tarea->delete();
-        return view('tareas.tareaEliminada', ['id' => $request->id]);
-    }
+    // public function borrar(Request $request)
+    // {
+    //     $tarea = Tarea::find($request->id);
+    //     // Primero, borro el fichero asociado a la tarea (si existe)
+    //     if ($tarea->fichero != '' || $tarea->fichero == null)
+    //         Storage::disk('public')->delete('ficheros/' . $tarea->fichero);
+    //     $tarea->delete();
+    //     return view('tareas.tareaEliminada', ['id' => $request->id]);
+    // }
 
     public function cambiarEstado($id)
     {
