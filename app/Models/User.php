@@ -22,7 +22,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'dni',
+        'telefono',
+        'direccion',
+        'fechaalta',
+        'tipo'
     ];
+    protected $dates = ['fechaalta'];
 
     /**
      * The attributes that should be hidden for serialization.
