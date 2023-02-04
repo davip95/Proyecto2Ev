@@ -47,14 +47,22 @@
                     {{-- <li class="nav-item">
                         <a class="btn btn-dark" id="linkhead" href="" role="button"><i class="bi bi-search"></i> Buscar Tareas</a>
                     </li> --}}
+                    <li class="nav-item separador">|</li>
                     <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="" role="button"><i class="bi bi-person-lines-fill"></i> Listar Usuarios</a>
+                        <a class="btn btn-dark" id="linkhead" href="{{ route('usuario.index') }}" role="button"><i class="bi bi-person-lines-fill"></i> Listar Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="" role="button"><i class="bi bi-person-plus"></i> Añadir Usuario</a>
+                        <a class="btn btn-dark" id="linkhead" href="{{ route('usuario.create') }}" role="button"><i class="bi bi-person-plus"></i> Añadir Usuario</a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-dark" id="linkhead" href="" role="button"><i class="bi bi-person-circle"></i> Mi Usuario</a>
+                    </li>
+                    <li class="nav-item separador">|</li>
+                    <li class="nav-item">
+                        <a class="btn btn-dark" id="linkhead" href="{{ route('cliente.index') }}" role="button"><i class="bi bi-person-vcard"></i> Listar Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-dark" id="linkhead" href="{{ route('cliente.create') }}" role="button"><i class="bi bi-person-plus-fill"></i> Añadir Cliente</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

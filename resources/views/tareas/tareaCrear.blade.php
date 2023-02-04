@@ -2,15 +2,6 @@
 @section('cuerpo')
 <h1>Añadir nueva tarea</h1>
 <div class="formulario">
-    {{-- @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li><br>
-            @endforeach
-        </ul>
-    </div>
-    @endif --}}
     <form action=" {{ route('tarea.store') }}" method="POST">
         {{-- @csrf --}}
         <div class="padrecolumnas">
@@ -149,7 +140,6 @@
                 <br><a href="{{ route('tarea.index') }}" class="btn btn-danger" role="button">Cancelar Creación</a>
             </div>
         </div>
-
     </form>
 </div>
 @endsection

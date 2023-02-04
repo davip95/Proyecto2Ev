@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 class ClientesCtrl extends Controller
@@ -13,7 +14,8 @@ class ClientesCtrl extends Controller
      */
     public function index()
     {
-        //
+        $clientes = Cliente::orderByDesc('pais')->paginate(4);
+        return view('clientes.clientesVer', compact('clientes'));
     }
 
     /**
@@ -45,7 +47,8 @@ class ClientesCtrl extends Controller
      */
     public function show($id)
     {
-        //
+        $cliente = Cliente::find($id);
+        return view('clientes.clienteVerDetalles', compact('cliente'));
     }
 
     /**
@@ -79,6 +82,14 @@ class ClientesCtrl extends Controller
      */
     public function destroy($id)
     {
-        //
+        $cliente = Cliente::find($id);
+        $cliente->delete();
+        return view('clientes.clienteEliminado', ['id' => $id]);
+    }
+
+    public function confirmarBorrado($id)
+    {
+        $cliente = Cliente::find($id);
+        return view('clientes.clienteEliminar', compact('cliente'));
     }
 }

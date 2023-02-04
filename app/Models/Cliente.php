@@ -11,6 +11,16 @@ class Cliente extends Model
     //use HasFactory;
     use SoftDeletes;
     protected $table = 'clientes';
+    protected $fillable = [
+        'cif',
+        'nombre',
+        'telefono',
+        'correo',
+        'cuentacorriente',
+        'pais',
+        'moneda',
+        'importemensual'
+    ];
     public $timestamps = false;
 
     public function tareas()

@@ -215,16 +215,6 @@ class TareasCtrl extends Controller
         return view('tareas.tareaEliminar', compact('tarea'));
     }
 
-    // public function borrar(Request $request)
-    // {
-    //     $tarea = Tarea::find($request->id);
-    //     // Primero, borro el fichero asociado a la tarea (si existe)
-    //     if ($tarea->fichero != '' || $tarea->fichero == null)
-    //         Storage::disk('public')->delete('ficheros/' . $tarea->fichero);
-    //     $tarea->delete();
-    //     return view('tareas.tareaEliminada', ['id' => $request->id]);
-    // }
-
     public function cambiarEstado($id)
     {
         $tarea = Tarea::find($id);
@@ -266,10 +256,5 @@ class TareasCtrl extends Controller
         $tarea->update($datos);
         // Una vez completada, muestro la tarea en detalle
         return $this->show($id);
-        // if ($tarea->fichero != '' || $tarea->fichero == null) {
-        //     $url = Storage::url('ficheros/' . $tarea->fichero);
-        //     return view('tareas.tareaVerDetalles', compact('tarea', 'url'));
-        // }
-        // return view('tareas.tareaVerDetalles', compact('tarea'));
     }
 }

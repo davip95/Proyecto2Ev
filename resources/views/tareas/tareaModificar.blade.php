@@ -137,8 +137,8 @@
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
-                <br><input class="btn btn-success" type="submit" value="Confirmar Cambios" id="añadir">
-                <br><a href=" {{ route('tarea.show', $tarea) }} " class="btn btn-danger" role="button">Cancelar Cambios</a>
+                <br><input class="btn btn-danger" type="submit" value="Confirmar Cambios" id="añadir">
+                <br><a href=" {{ route('tarea.show', $tarea) }} " class="btn btn-success" role="button">Cancelar Cambios</a>
             </div>
         </div>
     </form>

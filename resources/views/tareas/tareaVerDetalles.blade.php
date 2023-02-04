@@ -1,6 +1,6 @@
 @extends('plantilla')
 @section('cuerpo')
-<h1>Tarea {{$tarea['id']}}</h1>
+<h1>Detalles Tarea</h1>
 <br>
 <table class="table table-bordered table-responsive table-condensed" id="listaTareas">
     <thead class="table-dark">
