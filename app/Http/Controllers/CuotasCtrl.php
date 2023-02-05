@@ -14,9 +14,11 @@ class CuotasCtrl extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $cliente = Cliente::find($id);
+        $cuotas = Cuota::select()->where('clientes_id', $id)->orderBy('fechaemision')->paginate(4);
+        return view('cuotas.cuotasClienteVer', compact('cliente', 'cuotas'));
     }
 
     /**
@@ -82,7 +84,9 @@ class CuotasCtrl extends Controller
      */
     public function destroy($id)
     {
-        //
+        $cuota = Cuota::find($id);
+        $cuota->delete();
+        return view('cuotas.cuotaEliminada', ['id' => $id]);
     }
 
     public function crearRemesa()
@@ -113,5 +117,37 @@ class CuotasCtrl extends Controller
         //dd($remesa);
         Cuota::insert($remesa);
         return view('cuotas.cuotasRemesaAgregada');
+    }
+
+    public function confirmarBorrado($id)
+    {
+        $cuota = Cuota::find($id);
+        return view('cuotas.cuotaEliminar', compact('cuota'));
+    }
+
+    public function listarCuotasCliente($id)
+    {
+        $cliente = Cliente::find($id);
+        $cuotas = Cuota::select()->where('clientes_id', $id)->orderBy('fechaemision')->paginate(4);
+        return view('cuotas.cuotasClienteVer', compact('cliente', 'cuotas'));
+    }
+
+    public function listarCuotasPendientes($id)
+    {
+        $cliente = Cliente::find($id);
+        $cuotas = Cuota::select()->where('clientes_id', $id)->where('pagada', 0)->orderBy('fechaemision')->paginate(4);
+        return view('cuotas.cuotasClientePendientes', compact('cliente', 'cuotas'));
+    }
+
+    public function crearCuota($id)
+    {
+    }
+
+    public function agregarCuota($id)
+    {
+    }
+
+    public function corregir($id)
+    {
     }
 }

@@ -31,6 +31,8 @@
     </tbody>
 </table>
 <h5>
+    <a href="{{ route('cuota.listarCuotasCliente', $cliente) }}" class="btn btn-secondary" role="button">Cuotas</a>
+    &nbsp;&nbsp;
     <a href="{{ route('cliente.index') }}" class="btn btn-primary" role="button">Listado de Clientes</a>
     &nbsp;&nbsp;
     <a href="{{ route('cliente.confirmarBorrado', $cliente) }}" class="btn btn-danger" role="button">Borrar Cliente</a>

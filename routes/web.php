@@ -47,5 +47,11 @@ Route::resource('cliente', ClientesCtrl::class);
 Route::controller(CuotasCtrl::class)->group(function () {
     Route::get('/cuota/creaRemesa', 'crearRemesa')->name('cuota.crearRemesa');
     Route::post('/cuota/agregaRemesa', 'agregarRemesa')->name('cuota.agregarRemesa');
+    Route::get('/cuota/{id}/borrado', 'confirmarBorrado')->name('cuota.confirmarBorrado');
+    Route::get('/cuota/{id}/listar', 'listarCuotasCliente')->name('cuota.listarCuotasCliente');
+    Route::get('/cuota/{id}/crearCuota', 'crearCuota')->name('cuota.crearCuota');
+    Route::post('/cuota/{id}/agregarCuota', 'agregarCuota')->name('cuota.agregarCuota');
+    Route::get('/cuota/{id}/pendientes', 'listarCuotasPendientes')->name('cuota.listarCuotasPendientes');
+    Route::put('/cuota/{id}/corregir', 'corregir')->name('cuota.corregir');
 });
 Route::resource('cuota', CuotasCtrl::class);
