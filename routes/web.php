@@ -3,6 +3,7 @@
 use App\Http\Controllers\TareasCtrl;
 use App\Http\Controllers\UsersCtrl;
 use App\Http\Controllers\ClientesCtrl;
+use App\Http\Controllers\CuotasCtrl;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 
@@ -42,3 +43,9 @@ Route::controller(ClientesCtrl::class)->group(function () {
     Route::get('/cliente/{id}/borrado', 'confirmarBorrado')->name('cliente.confirmarBorrado');
 });
 Route::resource('cliente', ClientesCtrl::class);
+
+Route::controller(CuotasCtrl::class)->group(function () {
+    Route::get('/cuota/creaRemesa', 'crearRemesa')->name('cuota.crearRemesa');
+    Route::post('/cuota/agregaRemesa', 'agregarRemesa')->name('cuota.agregarRemesa');
+});
+Route::resource('cuota', CuotasCtrl::class);

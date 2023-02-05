@@ -11,7 +11,17 @@ class Cuota extends Model
     //use HasFactory;
     use SoftDeletes;
     protected $table = 'cuotas';
+    protected $fillable = [
+        'concepto',
+        'fechaemision',
+        'importe',
+        'pagada',
+        'fechapago',
+        'notas',
+        'clientes_id'
+    ];
     public $timestamps = false;
+    protected $dates = ['fechaemision', 'fechapago'];
 
     public function clientes()
     {

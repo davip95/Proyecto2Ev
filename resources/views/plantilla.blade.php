@@ -64,6 +64,10 @@
                     <li class="nav-item">
                         <a class="btn btn-dark" id="linkhead" href="{{ route('cliente.create') }}" role="button"><i class="bi bi-person-plus-fill"></i> Añadir Cliente</a>
                     </li>
+                    <li class="nav-item separador">|</li>
+                    <li class="nav-item">
+                        <a class="btn btn-dark" id="linkhead" href="{{ route('cuota.crearRemesa') }}" role="button"><i class="bi bi-journal-plus"></i> Añadir Remesa</a>
+                    </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {{-- <div id="sesion">
