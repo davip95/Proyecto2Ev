@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Pais;
 use Illuminate\Http\Request;
 
 class ClientesCtrl extends Controller
@@ -15,6 +16,13 @@ class ClientesCtrl extends Controller
     public function index()
     {
         $clientes = Cliente::orderByDesc('pais')->paginate(4);
+        // Para cada cliente, busco el nombre del pais y de la moneda para mostrarlos en lugar de la nomenclatura ISO
+        foreach ($clientes as $cliente) {
+            $cliente->pais = Pais::select('nombre')->where('iso3', $cliente['pais'])->first()->nombre;
+            // Compruebo si el pais del cliente tiene moneda para que en ese caso, se muestre el nombre de la moneda
+            if ($cliente->moneda != '-')
+                $cliente->moneda = Pais::select('nombre_moneda')->where('iso_moneda', $cliente['moneda'])->first()->nombre_moneda;
+        }
         return view('clientes.clientesVer', compact('clientes'));
     }
 
@@ -25,7 +33,8 @@ class ClientesCtrl extends Controller
      */
     public function create()
     {
-        //
+        $paises = Pais::select('iso3', 'nombre', 'iso_moneda', 'nombre_moneda')->orderBy('nombre')->get();
+        return view('clientes.clienteCrear', compact('paises'));
     }
 
     /**
@@ -36,7 +45,23 @@ class ClientesCtrl extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datos = $request->validate([
+            'nombre' => ['required', 'max:45'],
+            'correo' => ['required', 'max:45', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
+            'pais' => ['required', 'max:3'],
+            'cif' => ['required', 'max:45', 'regex:/^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/'],
+            'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
+            'cuentacorriente' => ['required', 'max:45', 'regex:/^([A-Z]{2}[ \-]?[0-9]{2})(?=(?:[ \-]?[A-Z0-9]){9,30}$)((?:[ \-]?[A-Z0-9]{3,5}){2,7})([ \-]?[A-Z0-9]{1,3})?$/'],
+            'importemensual' => ['required', 'between:0,99999.99'],
+        ]);
+        // Almaceno la moneda del pais seleccionado para guardar su iso3 en la bd
+        $moneda = Pais::select('iso_moneda')->where('iso3', $datos['pais'])->first();
+        // Compruebo si el pais no tiene moneda y le asigno el valor '-' para indicar que no tiene
+        if ($moneda->iso_moneda == null)
+            $moneda->iso_moneda = '-';
+        $datos['moneda'] = $moneda->iso_moneda;
+        $cliente = Cliente::create($datos);
+        return view('clientes.clienteVerDetalles', compact('cliente'));
     }
 
     /**
@@ -48,6 +73,10 @@ class ClientesCtrl extends Controller
     public function show($id)
     {
         $cliente = Cliente::find($id);
+        $cliente->pais = Pais::select('nombre')->where('iso3', $cliente['pais'])->first()->nombre;
+        // Compruebo si el pais del cliente tiene moneda para que en ese caso, se muestre el nombre de la moneda
+        if ($cliente->moneda != '-')
+            $cliente->moneda = Pais::select('nombre_moneda')->where('iso_moneda', $cliente['moneda'])->first()->nombre_moneda;
         return view('clientes.clienteVerDetalles', compact('cliente'));
     }
 

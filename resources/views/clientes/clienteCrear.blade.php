@@ -1,70 +1,64 @@
 @extends('plantilla')
 @section('cuerpo')
-<h1>Añadir nuevo usuario</h1>
+<h1>Añadir nuevo cliente</h1>
 <div class="formulario">
-    <form action=" {{ route('usuario.store') }}" method="POST">
+    <form action=" {{ route('cliente.store') }}" method="POST">
         {{-- @csrf --}}
         <div class="padrecolumnas">
             <div class="columnacampos">
                 <label class="form-label">Nombre</label>
-                <input type="text" name="name" class="form-control form-control-sm @error('name') is-invalid @enderror" value="{{ old('name') }}">
+                <input type="text" name="nombre" class="form-control form-control-sm @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}">
                 <div class="form-text info">El nombre sólo puede contener letas y/o números.</div>
-                @error('name')  
+                @error('nombre')  
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
-                <label class="form-label">Contraseña</label>
-                <input type="text" name="password" class="form-control form-control-sm @error('name') is-invalid @enderror">
-                @error('password')  
+                <label class="form-label">CIF</label>
+                <input type="text" name="cif" class="form-control form-control-sm @error('cif') is-invalid @enderror" value="{{ old('cif') }}">
+                @error('cif')  
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
-                <label class="form-label">Repita Contraseña</label>
-                <input type="text" name="passrep" class="form-control form-control-sm @error('name') is-invalid @enderror">
-                @error('passrep')  
-                <small>{{ $message }}</small>
-                @enderror
-                <br>
-                <label class="form-label">Correo electrónico</label>
-                <input type="text" name="email" class="form-control form-control-sm @error('email') is-invalid @enderror" value="{{ old('email') }}">
-                @error('email')  
-                <small>{{ $message }}</small>
-                @enderror
-                <br>
-                <br><input class="btn btn-success" type="submit" value="Añadir Usuario" id="añadir">
-            </div>
-            <div class="columnacampos">
-                <label class="form-label">DNI</label>
-                <input type="text" name="dni" class="form-control form-control-sm @error('dni') is-invalid @enderror" value="{{ old('dni') }}">
-                @error('dni')  
-                <small>{{ $message }}</small>
-                @enderror
-                <br><br>
                 <label class="form-label">Telefono</label>
                 <input type="text" name="telefono" class="form-control form-control-sm @error('telefono') is-invalid @enderror" value="{{ old('telefono') }}">
                 @error('telefono')  
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
-                <label class="form-label">Direccion</label>
-                <input type="text" name="direccion" class="form-control form-control-sm @error('direccion') is-invalid @enderror" value="{{ old('direccion') }}">
-                @error('direccion')  
+                <label class="form-label">Correo electrónico</label>
+                <input type="text" name="correo" class="form-control form-control-sm @error('correo') is-invalid @enderror" value="{{ old('correo') }}">
+                @error('correo')  
+                <small>{{ $message }}</small>
+                @enderror
+                <br><input class="btn btn-success" type="submit" value="Añadir Cliente" id="añadir">
+            </div>
+            <div class="columnacampos">
+                <label class="form-label">Importe Mensual</label>
+                <input type="number" name="importemensual" step="0.01" min="0" class="form-control form-control-sm @error('importemensual') is-invalid @enderror" value="{{ old('importemensual') }}" />
+                <div class="form-text info">Admite hasta dos decimales separados por coma (,).</div>
+                @error('importemensual')  
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
-                <label class="form-label">Tipo</label>
-                <div class="form-check">
-                    <input class="form-check-input @error('tipo') is-invalid @enderror" type="radio" name="tipo" id="admin" value="administrador" {{old('tipo') == 'administrador' ? 'checked' : ''}}>
-                    <label class="form-check-label" for="admin">Administrador</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input @error('tipo') is-invalid @enderror" type="radio" name="tipo" id="operario" value="operario" {{old('tipo') == 'operario' ? 'checked' : ''}}>
-                    <label class="form-check-label" for="operario">Operario</label>
-                </div>
-                @error('tipo')  
+                <label class="form-label">Cuenta Corriente</label>
+                <input type="text" name="cuentacorriente" class="form-control form-control-sm @error('cuentacorriente') is-invalid @enderror" value="{{ old('cuentacorriente') }}">
+                @error('cuentacorriente')  
                 <small>{{ $message }}</small>
                 @enderror
-                <br><a href="{{ route('usuario.index') }}" class="btn btn-danger" role="button">Cancelar Creación</a>
+                <br>
+                <label class="form-label">País</label>
+                <select class="form-select form-select-lg @error('pais') is-invalid @enderror" name="pais">
+                    <option disabled selected>Selecciona País</option>
+                    @foreach ($paises as $pais)
+                    <option value="{{$pais['iso3']}}" @selected(old('pais') == $pais['iso3'])>{{$pais["nombre"]}}</option>
+                    @endforeach
+                </select>        
+                @error('pais')  
+                <small>{{ $message }}</small>
+                @enderror
+                <br><br>
+                <br><br>
+                <br><a href="{{ route('usuario.index') }}" class="btn btn-danger cancelaCliente" role="button">Cancelar Creación</a>
             </div>
         </div>
     </form>

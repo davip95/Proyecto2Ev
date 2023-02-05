@@ -72,7 +72,6 @@ small {
     font-weight: bold;
 }
 
-/* .table {
-    width: 90%;
-    margin: 0 auto;
-} */
+.cancelaCliente {
+    margin-top: 2px;
+}
