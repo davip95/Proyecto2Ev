@@ -1,64 +1,48 @@
 @extends('plantilla')
 @section('cuerpo')
 <h1>Añadir cuota a {{$cliente->nombre}}</h1>
+<br>
+<table class="table table-bordered table-responsive table-condensed" id="listaTareas" style="width: 40%; margin: 0 auto">
+    <thead class="table-dark">
+        <tr>
+            <th>Cliente</th>
+            <th>Fecha Emisión</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{$cliente->nombre}}</td>
+            <td>{{strftime("%d/%m/%Y")}}</td>
+        </tr>
+    </tbody>
+</table>
 <div class="formulario">
-    <form action=" {{ route('cliente.store') }}" method="POST">
+    <form action=" {{ route('cuota.agregarCuota', $cliente) }}" method="POST">
         {{-- @csrf --}}
         <div class="padrecolumnas">
             <div class="columnacampos">
-                <label class="form-label">Nombre</label>
-                <input type="text" name="nombre" class="form-control form-control-sm @error('nombre') is-invalid @enderror" value="{{ old('nombre') }}">
-                <div class="form-text info">El nombre sólo puede contener letas y/o números.</div>
-                @error('nombre')  
+                <label class="form-label">Concepto</label>
+                <input type="text" name="concepto" class="form-control form-control-sm @error('concepto') is-invalid @enderror" value="{{ old('concepto') }}">
+                @error('concepto')  
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
-                <label class="form-label">CIF</label>
-                <input type="text" name="cif" class="form-control form-control-sm @error('cif') is-invalid @enderror" value="{{ old('cif') }}">
-                @error('cif')  
+                <label class="form-label">Importe</label>
+                <input type="number" name="importe" step="0.01" min="0" class="form-control form-control-sm @error('importe') is-invalid @enderror" value="{{ old('importe') }}" />
+                <div class="form-text info mb-1">Admite hasta dos decimales separados por coma (,).</div>
+                @error('importe')  
                 <small>{{ $message }}</small>
                 @enderror
-                <br>
-                <label class="form-label">Telefono</label>
-                <input type="text" name="telefono" class="form-control form-control-sm @error('telefono') is-invalid @enderror" value="{{ old('telefono') }}">
-                @error('telefono')  
-                <small>{{ $message }}</small>
-                @enderror
-                <br>
-                <label class="form-label">Correo electrónico</label>
-                <input type="text" name="correo" class="form-control form-control-sm @error('correo') is-invalid @enderror" value="{{ old('correo') }}">
-                @error('correo')  
-                <small>{{ $message }}</small>
-                @enderror
-                <br><input class="btn btn-success" type="submit" value="Añadir Cliente" id="añadir">
+                <br><input class="btn btn-success" type="submit" value="Añadir Cuota" id="añadir">
             </div>
             <div class="columnacampos">
-                <label class="form-label">Importe Mensual</label>
-                <input type="number" name="importemensual" step="0.01" min="0" class="form-control form-control-sm @error('importemensual') is-invalid @enderror" value="{{ old('importemensual') }}" />
-                <div class="form-text info">Admite hasta dos decimales separados por coma (,).</div>
-                @error('importemensual')  
+                <label class="form-label">Anotaciones Adicionales</label>
+                <textarea name="notas" class="form-control form-control-sm @error('notas') is-invalid @enderror" cols="35" rows="5">{{ old('notas') }}</textarea>
+                @error('notas')  
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
-                <label class="form-label">Cuenta Corriente</label>
-                <input type="text" name="cuentacorriente" class="form-control form-control-sm @error('cuentacorriente') is-invalid @enderror" value="{{ old('cuentacorriente') }}">
-                @error('cuentacorriente')  
-                <small>{{ $message }}</small>
-                @enderror
-                <br>
-                <label class="form-label">País</label>
-                <select class="form-select form-select-lg @error('pais') is-invalid @enderror" name="pais">
-                    <option disabled selected>Selecciona País</option>
-                    @foreach ($paises as $pais)
-                    <option value="{{$pais['iso3']}}" @selected(old('pais') == $pais['iso3'])>{{$pais["nombre"]}}</option>
-                    @endforeach
-                </select>        
-                @error('pais')  
-                <small>{{ $message }}</small>
-                @enderror
-                <br><br>
-                <br><br>
-                <br><a href="{{ route('usuario.index') }}" class="btn btn-danger cancelaCliente" role="button">Cancelar Creación</a>
+                <br><a href="{{ route('cliente.index') }}" class="btn btn-danger cancelaCliente" role="button">Cancelar Cuota</a>
             </div>
         </div>
     </form>

@@ -18,7 +18,7 @@ class TareasCtrl extends Controller
      */
     public function index()
     {
-        $tareas = Tarea::orderByDesc('fechacreacion')->paginate(4);
+        $tareas = Tarea::where('users_id', '!=', null)->orderByDesc('fechacreacion')->paginate(4);
         return view('tareas.tareasVer', compact('tareas'));
     }
 
@@ -200,7 +200,7 @@ class TareasCtrl extends Controller
 
     public function verPendientes()
     {
-        $tareas = Tarea::where('estado', '=', 'P')->paginate(4);
+        $tareas = Tarea::where('estado', '=', 'P')->where('users_id', '!=', null)->paginate(4);
         return view('tareas.tareasVerPendientes', compact('tareas'));
     }
 

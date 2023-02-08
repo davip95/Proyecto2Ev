@@ -34,7 +34,7 @@
     </tbody>
 </table>
 <div class="alert alert-danger aletarborrar" role="alert"><strong>Esta operación es irreversible. Asegúrese de que quiere eliminar la cuota antes de confirmarlo.</strong></div>
-<h5><a href="{{ route('cliente.index') }}" class="btn btn-success" role="button"><i class="bi bi-x-square"></i> Cancelar Borrado</a></h5>
+<h5><a href="{{ route('cuota.listarCuotasCliente', $cuota->clientes->id) }}" class="btn btn-success" role="button"><i class="bi bi-x-square"></i> Cancelar Borrado</a></h5>
 <br>
 <form action="{{ route('cuota.destroy', $cuota) }}" method="post">
     {{-- @csrf --}}

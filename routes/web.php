@@ -52,6 +52,5 @@ Route::controller(CuotasCtrl::class)->group(function () {
     Route::get('/cuota/{id}/crearCuota', 'crearCuota')->name('cuota.crearCuota');
     Route::post('/cuota/{id}/agregarCuota', 'agregarCuota')->name('cuota.agregarCuota');
     Route::get('/cuota/{id}/pendientes', 'listarCuotasPendientes')->name('cuota.listarCuotasPendientes');
-    Route::put('/cuota/{id}/corregir', 'corregir')->name('cuota.corregir');
 });
 Route::resource('cuota', CuotasCtrl::class);

@@ -50,7 +50,11 @@
         <tr>
             <td>{{$tarea['provincia']}}</td>
             <td>{{$tarea['estado']}}</td>
-            <td>{{$tarea->users->name}}</td>
+            @if($tarea->users_id != null)
+                <td>{{$tarea->users->name}}</td>
+            @else
+                <td>-</td>
+            @endif
             <td>{{$tarea['fechacreacion']->format('d/m/Y H:i')}}</td>
             @if($tarea['fechafin'] != null)
             <td>{{$tarea['fechafin']->format('d/m/Y H:i')}}</td>
