@@ -25,6 +25,7 @@ Route::get('/', function () {
 
 Route::controller(TareasCtrl::class)->group(function () {
     Route::get('/tarea/pendientes', 'verPendientes')->name('tarea.pendientes');
+    Route::get('/tarea/incidencias', 'verIncidencias')->name('tarea.incidencias');
     Route::get('/tarea/{id}/borrado', 'confirmarBorrado')->name('tarea.confirmarBorrado');
     Route::get('/tarea/{id}/cambiarEstado', 'cambiarEstado')->name('tarea.cambiarEstado');
     Route::put('/tarea/{id}/completar', 'completar')->name('tarea.completar');

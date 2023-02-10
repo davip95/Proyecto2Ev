@@ -44,9 +44,9 @@
                     <li class="nav-item">
                         <a class="btn btn-dark" id="linkhead" href="{{ route('tarea.pendientes') }}" role="button"><i class="bi bi-clock-history"></i> Tareas Pendientes</a>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a class="btn btn-dark" id="linkhead" href="" role="button"><i class="bi bi-search"></i> Buscar Tareas</a>
-                    </li> --}}
+                    <li class="nav-item">
+                        <a class="btn btn-dark" id="linkhead" href="{{ route('tarea.incidencias') }}" role="button"><i class="bi bi-journal-arrow-up"></i> Incidencias</a>
+                    </li>
                     <li class="nav-item separador">|</li>
                     <li class="nav-item">
                         <a class="btn btn-dark" id="linkhead" href="{{ route('usuario.index') }}" role="button"><i class="bi bi-person-lines-fill"></i> Listar Usuarios</a>

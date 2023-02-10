@@ -257,4 +257,10 @@ class TareasCtrl extends Controller
         // Una vez completada, muestro la tarea en detalle
         return $this->show($id);
     }
+
+    public function verIncidencias()
+    {
+        $incidencias = Tarea::where('users_id', null)->paginate(4);
+        return view('tareas.tareasVerIncidencias', compact('incidencias'));
+    }
 }
