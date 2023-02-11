@@ -43,6 +43,8 @@ class TareasCtrl extends Controller
      */
     public function store(Request $request)
     {
+        // AÑADIR UNA COMPROBACION PARA VER SI EN EL $request VA EL clientes_id O NO (NO IRÁ SI ES UNA INCIDENCIA) Y AÑADIRLO COGIENDO SU
+        // ID DESDE ALGUNA VARIABLE DE SESION
         $fechaCreacion = $request->fechacreacion;
         $estado = $request->estado;
         $fechaFin = $request->fechafin;
@@ -263,4 +265,7 @@ class TareasCtrl extends Controller
         $incidencias = Tarea::where('users_id', null)->paginate(4);
         return view('tareas.tareasVerIncidencias', compact('incidencias'));
     }
+
+    //LOS DOS SIGUIENTES MÉTODOS PUEDE QUE NO HAGAN FALTA SI SACO EL clientes_id DE UNA VARIABLE DE SESION PARA EL STORE DE UNA INCIDENCIA 
+
 }
