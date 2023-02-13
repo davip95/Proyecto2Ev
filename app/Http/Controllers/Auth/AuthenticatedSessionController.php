@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\TareasCtrl;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
@@ -30,7 +31,9 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         // return redirect()->intended(RouteServiceProvider::HOME);
-        return view('plantilla');
+        //return view('plantilla');
+        session(['hora' => date('H:i:s')]);
+        return redirect()->action([TareasCtrl::class, 'index']);
     }
 
     /**
