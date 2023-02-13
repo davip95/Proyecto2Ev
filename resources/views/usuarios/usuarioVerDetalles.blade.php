@@ -7,7 +7,6 @@
         <tr>
             <th>ID Usuario</th>
             <th>Nombre</th>
-            <th>Contraseña</th>
             <th>DNI</th>
             <th>Telefono</th>
             <th>Direccion</th>
@@ -20,7 +19,6 @@
         <tr>
             <td>{{$usuario['id']}}</td>
             <td>{{$usuario['name']}}</td>
-            <td>{{$usuario['password']}}</td>
             <td>{{$usuario['dni']}}</td>
             <td>{{$usuario['telefono']}}</td>
             <td>{{$usuario['direccion']}}</td>

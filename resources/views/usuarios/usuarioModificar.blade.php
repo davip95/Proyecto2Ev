@@ -39,13 +39,13 @@
                 @enderror
                 <br>
                 <label class="form-label">Nueva Contraseña</label>
-                <input type="text" name="password" class="form-control form-control-sm @error('password') is-invalid @enderror" value="{{ old('password', $usuario->password) }}">
+                <input type="text" name="password" class="form-control form-control-sm @error('password') is-invalid @enderror">
                 @error('password')  
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
                 <label class="form-label">Repita Nueva Contraseña</label>
-                <input type="text" name="passrep" class="form-control form-control-sm @error('passrep') is-invalid @enderror" value="{{ old('passrep', $usuario->password) }}">
+                <input type="text" name="passrep" class="form-control form-control-sm @error('passrep') is-invalid @enderror">
                 @error('passrep')  
                 <small>{{ $message }}</small>
                 @enderror

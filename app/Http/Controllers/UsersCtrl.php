@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UsersCtrl extends Controller
 {
@@ -55,6 +56,8 @@ class UsersCtrl extends Controller
             'direccion' => ['required', 'max:45'],
             'tipo' => ['required', 'max:45'],
         ]);
+        // Encripto la contraseña para poder utilizar el login de Breeze
+        $datos['password'] = Hash::make($request->password);
         // Almaceno la fecha del momento de creación del usuario para mostrarla como fecha de alta
         $datos['fechaalta'] = date("Y-m-d\TH:i");
         // Elimino el campo passrep del array de datos ya que no es necesario insertarlo en la base de datos

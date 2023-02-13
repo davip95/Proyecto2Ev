@@ -70,12 +70,12 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    {{-- <div id="sesion">
-                        <p class="navbar-text">Bienvenido, <span class="infosesion">{{$sesion["nombre"]}}</span></p>
-                        <p class="navbar-text">Rol: <span class="infosesion">{{$sesion["tipo"]}}</span></p>
-                        <p class="navbar-text">Sesión: <span class="infosesion">{{$sesion["hora"]}}</span></p>
-                    </div> --}}
-                    <li class="botonesCabecera"><a href="index.php?controller=login&action=salir" id="logout"><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
+                    <div id="sesion">
+                        <p class="navbar-text">Bienvenido, <span class="infosesion">{{ Auth::user()->name }}</span></p>
+                        {{-- <p class="navbar-text">Rol: <span class="infosesion">{{$sesion["tipo"]}}</span></p>
+                        <p class="navbar-text">Sesión: <span class="infosesion">{{$sesion["hora"]}}</span></p> --}}
+                    </div>
+                    <li class="botonesCabecera"><a href="{{ route('logout') }}" id="logout"><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
                 </ul>
             </div>
         </nav>
