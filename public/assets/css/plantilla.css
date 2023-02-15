@@ -46,6 +46,7 @@ footer {
 
 #logout:hover {
     color: red;
+    background-color: transparent;
 }
 
 .botonesCabecera {
@@ -96,4 +97,9 @@ small {
 
 .cancelaCliente {
     margin-top: 2px;
+}
+
+header .navbar-dark {
+    padding-bottom: 0;
+    margin-bottom: 7px;
 }

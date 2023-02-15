@@ -1,7 +1,13 @@
 @extends('plantilla')
 @section('cuerpo')
 <h1>Añadir Remesa Mensual</h1>
-<h3>Mes: {{strftime("%B")}}</h3>
+<h3>
+    Mes: 
+    @php
+    setlocale(LC_TIME, "spanish"); 
+    @endphp 
+    {{strftime("%B")}}
+</h3>
 <br>
 <table class="table table-bordered table-responsive table-condensed" id="listaTareas">
     <thead class="table-dark">

@@ -74,7 +74,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <h6 class="navbar-brand">Nosecaen S.L.</h6>
+                    <h6 class="navbar-brand text-white-50 fw-bold">Nosecaen S.L.</h6>
                 </div>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
