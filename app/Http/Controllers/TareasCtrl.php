@@ -8,6 +8,7 @@ use App\Models\Provincia;
 use App\Models\Cliente;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TareasCtrl extends Controller
 {
@@ -18,8 +19,13 @@ class TareasCtrl extends Controller
      */
     public function index()
     {
-        $tareas = Tarea::where('users_id', '!=', null)->orderByDesc('fechacreacion')->paginate(4);
-        return view('tareas.tareasVer', compact('tareas'));
+        if (Auth::user()->tipo == 'administrador') {
+            $tareas = Tarea::where('users_id', '!=', null)->orderByDesc('fechacreacion')->paginate(4);
+            return view('tareas.tareasVer', compact('tareas'));
+        } else {
+            $tareas = Tarea::where('users_id', Auth::user()->id)->orderByDesc('fechacreacion')->paginate(4);
+            return view('tareas.tareasVer', compact('tareas'));
+        }
     }
 
     /**
@@ -29,10 +35,13 @@ class TareasCtrl extends Controller
      */
     public function create()
     {
-        $operarios = User::select('id', 'name')->where('tipo', '=', 'operario')->get();
-        $provincias = Provincia::select('nombre')->get();
-        $clientes = Cliente::select('id', 'nombre')->get();
-        return view('tareas.tareaCrear', compact('operarios', 'provincias', 'clientes'));
+        if (Auth::user()->tipo == 'administrador') {
+            $operarios = User::select('id', 'name')->where('tipo', '=', 'operario')->get();
+            $provincias = Provincia::select('nombre')->get();
+            $clientes = Cliente::select('id', 'nombre')->get();
+            return view('tareas.tareaCrear', compact('operarios', 'provincias', 'clientes'));
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     /**
@@ -43,55 +52,56 @@ class TareasCtrl extends Controller
      */
     public function store(Request $request)
     {
-        // AÑADIR UNA COMPROBACION PARA VER SI EN EL $request VA EL clientes_id O NO (NO IRÁ SI ES UNA INCIDENCIA) Y AÑADIRLO COGIENDO SU
-        // ID DESDE ALGUNA VARIABLE DE SESION
-        $fechaCreacion = $request->fechacreacion;
-        $estado = $request->estado;
-        $fechaFin = $request->fechafin;
-        $datos = $request->validate([
-            'clientes_id' => ['required', 'max:45'],
-            'nombre' => ['required', 'max:45'],
-            'apellidos' => ['required', 'max:45'],
-            'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
-            'descripcion' => ['required', 'max:100'],
-            'correo' => ['required', 'max:100', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
-            'direccion' => ['required', 'max:100'],
-            'poblacion' => ['required', 'max:45'],
-            'codpostal' => ['required', 'max:45', 'regex:/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/'],
-            'provincia' => ['required', 'max:45'],
-            'estado' => [
-                'required', 'max:45',
-                function ($attribute, $value, $fail) use ($fechaFin) {
-                    if ($value == 'R' && $fechaFin == null) {
-                        $fail('No puede marcar la tarea Realizada (R) sin una fecha de realización.');
+        if (Auth::user()->tipo == 'administrador') {
+            $fechaCreacion = $request->fechacreacion;
+            $estado = $request->estado;
+            $fechaFin = $request->fechafin;
+            $datos = $request->validate([
+                'clientes_id' => ['required', 'max:45'],
+                'nombre' => ['required', 'max:45'],
+                'apellidos' => ['required', 'max:45'],
+                'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
+                'descripcion' => ['required', 'max:100'],
+                'correo' => ['required', 'max:100', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
+                'direccion' => ['required', 'max:100'],
+                'poblacion' => ['required', 'max:45'],
+                'codpostal' => ['required', 'max:45', 'regex:/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/'],
+                'provincia' => ['required', 'max:45'],
+                'estado' => [
+                    'required', 'max:45',
+                    function ($attribute, $value, $fail) use ($fechaFin) {
+                        if ($value == 'R' && $fechaFin == null) {
+                            $fail('No puede marcar la tarea Realizada (R) sin una fecha de realización.');
+                        }
                     }
-                }
-            ],
-            'users_id' => ['required', 'max:45'],
-            'fechacreacion' => [
-                'required', 'date_format:Y-m-d\TH:i',
-                function ($attribute, $value, $fail) {
-                    if (date("Y-m-d\TH", strtotime($value)) != date("Y-m-d\TH")) {
-                        $fail('La fecha de creación no se puede modificar.');
+                ],
+                'users_id' => ['required', 'max:45'],
+                'fechacreacion' => [
+                    'required', 'date_format:Y-m-d\TH:i',
+                    function ($attribute, $value, $fail) {
+                        if (date("Y-m-d\TH", strtotime($value)) != date("Y-m-d\TH")) {
+                            $fail('La fecha de creación no se puede modificar.');
+                        }
+                    },
+                ],
+                'fechafin' => [
+                    'nullable', 'date_format:Y-m-d\TH:i',
+                    function ($attribute, $value, $fail) use ($fechaCreacion, $estado) {
+                        if ($value <= $fechaCreacion) {
+                            $fail('La fecha de realización debe ser posterior a la de creación.');
+                        }
+                        if ($value != null && $estado != 'R') {
+                            $fail('Para introducir una fecha de realización el estado debe ser Realizada (R).');
+                        }
                     }
-                },
-            ],
-            'fechafin' => [
-                'nullable', 'date_format:Y-m-d\TH:i',
-                function ($attribute, $value, $fail) use ($fechaCreacion, $estado) {
-                    if ($value <= $fechaCreacion) {
-                        $fail('La fecha de realización debe ser posterior a la de creación.');
-                    }
-                    if ($value != null && $estado != 'R') {
-                        $fail('Para introducir una fecha de realización el estado debe ser Realizada (R).');
-                    }
-                }
-            ],
-            'anotaantes' => ['nullable', 'max:100'],
-            'anotapost' => ['nullable', 'max:100'],
-        ]);
-        $tarea = Tarea::create($datos);
-        return view('tareas.tareaVerDetalles', compact('tarea'));
+                ],
+                'anotaantes' => ['nullable', 'max:100'],
+                'anotapost' => ['nullable', 'max:100'],
+            ]);
+            $tarea = Tarea::create($datos);
+            return view('tareas.tareaVerDetalles', compact('tarea'));
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     /**
@@ -119,11 +129,14 @@ class TareasCtrl extends Controller
      */
     public function edit($id)
     {
-        $tarea = Tarea::find($id);
-        $operarios = User::select('id', 'name')->where('tipo', '=', 'operario')->get();
-        $provincias = Provincia::select('nombre')->get();
-        $clientes = Cliente::select('id', 'nombre')->get();
-        return view('tareas.tareaModificar', compact('tarea', 'operarios', 'provincias', 'clientes'));
+        if (Auth::user()->tipo == 'administrador') {
+            $tarea = Tarea::find($id);
+            $operarios = User::select('id', 'name')->where('tipo', '=', 'operario')->get();
+            $provincias = Provincia::select('nombre')->get();
+            $clientes = Cliente::select('id', 'nombre')->get();
+            return view('tareas.tareaModificar', compact('tarea', 'operarios', 'provincias', 'clientes'));
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     /**
@@ -135,53 +148,56 @@ class TareasCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
-        $fechaCreacion = Tarea::find($id)->fechacreacion->format('Y-m-d\TH:i');
-        $fechaFin = $request->fechafin;
-        $estado = $request->estado;
-        $datos = $request->validate([
-            'clientes_id' => ['required', 'max:45'],
-            'nombre' => ['required', 'max:45'],
-            'apellidos' => ['required', 'max:45'],
-            'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
-            'descripcion' => ['required', 'max:100'],
-            'correo' => ['required', 'max:100', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
-            'direccion' => ['required', 'max:100'],
-            'poblacion' => ['required', 'max:45'],
-            'codpostal' => ['required', 'max:45', 'regex:/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/'],
-            'provincia' => ['required', 'max:45'],
-            'estado' => [
-                'required', 'max:45',
-                function ($attribute, $value, $fail) use ($fechaFin) {
-                    if ($value == 'R' && $fechaFin == null) {
-                        $fail('No puede marcar la tarea Realizada (R) sin una fecha de realización.');
+        if (Auth::user()->tipo == 'administrador') {
+            $fechaCreacion = Tarea::find($id)->fechacreacion->format('Y-m-d\TH:i');
+            $fechaFin = $request->fechafin;
+            $estado = $request->estado;
+            $datos = $request->validate([
+                'clientes_id' => ['required', 'max:45'],
+                'nombre' => ['required', 'max:45'],
+                'apellidos' => ['required', 'max:45'],
+                'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
+                'descripcion' => ['required', 'max:100'],
+                'correo' => ['required', 'max:100', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
+                'direccion' => ['required', 'max:100'],
+                'poblacion' => ['required', 'max:45'],
+                'codpostal' => ['required', 'max:45', 'regex:/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/'],
+                'provincia' => ['required', 'max:45'],
+                'estado' => [
+                    'required', 'max:45',
+                    function ($attribute, $value, $fail) use ($fechaFin) {
+                        if ($value == 'R' && $fechaFin == null) {
+                            $fail('No puede marcar la tarea Realizada (R) sin una fecha de realización.');
+                        }
                     }
-                }
-            ],
-            'users_id' => ['required', 'max:45'],
-            'fechacreacion' => [
-                'required', 'max:45',
-                function ($attribute, $value, $fail) use ($fechaCreacion) {
-                    if ($value != $fechaCreacion) {
-                        $fail('La fecha de creación no se puede modificar.');
+                ],
+                'users_id' => ['required', 'max:45'],
+                'fechacreacion' => [
+                    'required', 'max:45',
+                    function ($attribute, $value, $fail) use ($fechaCreacion) {
+                        if ($value != $fechaCreacion) {
+                            $fail('La fecha de creación no se puede modificar.');
+                        }
                     }
-                }
-            ],
-            'fechafin' => [
-                'nullable', 'date_format:Y-m-d\TH:i',
-                function ($attribute, $value, $fail) use ($fechaCreacion, $estado) {
-                    if ($value <= $fechaCreacion) {
-                        $fail('La fecha de realización debe ser posterior a la de creación.');
+                ],
+                'fechafin' => [
+                    'nullable', 'date_format:Y-m-d\TH:i',
+                    function ($attribute, $value, $fail) use ($fechaCreacion, $estado) {
+                        if ($value <= $fechaCreacion) {
+                            $fail('La fecha de realización debe ser posterior a la de creación.');
+                        }
+                        if ($value != null && $estado != 'R') {
+                            $fail('Para introducir una fecha de realización el estado debe ser Realizada (R).');
+                        }
                     }
-                    if ($value != null && $estado != 'R') {
-                        $fail('Para introducir una fecha de realización el estado debe ser Realizada (R).');
-                    }
-                }
-            ],
-            'anotaantes' => ['nullable', 'max:100'],
-            'anotapost' => ['nullable', 'max:100'],
-        ]);
-        Tarea::find($id)->update($datos);
-        return $this->show($id);
+                ],
+                'anotaantes' => ['nullable', 'max:100'],
+                'anotapost' => ['nullable', 'max:100'],
+            ]);
+            Tarea::find($id)->update($datos);
+            return $this->show($id);
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     /**
@@ -192,80 +208,95 @@ class TareasCtrl extends Controller
      */
     public function destroy($id)
     {
-        $tarea = Tarea::find($id);
-        // Primero, borro el fichero asociado a la tarea (si existe)
-        if ($tarea->fichero != '' || $tarea->fichero == null)
-            Storage::disk('public')->delete('ficheros/' . $tarea->fichero);
-        $tarea->delete();
-        return view('tareas.tareaEliminada', ['id' => $id]);
+        if (Auth::user()->tipo == 'administrador') {
+            $tarea = Tarea::find($id);
+            // Primero, borro el fichero asociado a la tarea (si existe)
+            if ($tarea->fichero != '' || $tarea->fichero == null)
+                Storage::disk('public')->delete('ficheros/' . $tarea->fichero);
+            $tarea->delete();
+            return view('tareas.tareaEliminada', ['id' => $id]);
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     public function verPendientes()
     {
-        $tareas = Tarea::where('estado', '=', 'P')->where('users_id', '!=', null)->paginate(4);
-        return view('tareas.tareasVerPendientes', compact('tareas'));
+        if (Auth::user()->tipo == 'administrador') {
+            $tareas = Tarea::where('estado', '=', 'P')->where('users_id', '!=', null)->paginate(4);
+            return view('tareas.tareasVerPendientes', compact('tareas'));
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     public function confirmarBorrado($id)
     {
-        $tarea = Tarea::find($id);
-        // Genero la url del fichero asociado a la tarea (si existe) para poder descargarse desde la vista en detalle
-        if ($tarea->fichero != '' || $tarea->fichero == null) {
-            $url = Storage::url('ficheros/' . $tarea->fichero);
-            return view('tareas.tareaEliminar', compact('tarea', 'url'));
-        }
-        return view('tareas.tareaEliminar', compact('tarea'));
+        if (Auth::user()->tipo == 'administrador') {
+            $tarea = Tarea::find($id);
+            // Genero la url del fichero asociado a la tarea (si existe) para poder descargarse desde la vista en detalle
+            if ($tarea->fichero != '' || $tarea->fichero == null) {
+                $url = Storage::url('ficheros/' . $tarea->fichero);
+                return view('tareas.tareaEliminar', compact('tarea', 'url'));
+            }
+            return view('tareas.tareaEliminar', compact('tarea'));
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     public function cambiarEstado($id)
     {
-        $tarea = Tarea::find($id);
-        return view('tareas.tareaCompletar', compact('tarea'));
+        if (Auth::user()->tipo == 'operario') {
+            $tarea = Tarea::find($id);
+            return view('tareas.tareaCompletar', compact('tarea'));
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     public function completar(Request $request, $id)
     {
-        $tarea = Tarea::find($id);
-        // Guardo en una variable la fecha de creacion para usarla en la closure de la validacion de la fecha de realización
-        $fechaCreacion = $tarea->fechacreacion;
-        $datos = $request->validate([
-            'estado' => [
-                'required', 'max:45',
-                function ($attribute, $value, $fail) {
-                    if ($value != 'R') {
-                        $fail('Para completar la tarea el estado debe ser Realizada (R).');
+        if (Auth::user()->tipo == 'operario') {
+            $tarea = Tarea::find($id);
+            // Guardo en una variable la fecha de creacion para usarla en la closure de la validacion de la fecha de realización
+            $fechaCreacion = $tarea->fechacreacion;
+            $datos = $request->validate([
+                'estado' => [
+                    'required', 'max:45',
+                    function ($attribute, $value, $fail) {
+                        if ($value != 'R') {
+                            $fail('Para completar la tarea el estado debe ser Realizada (R).');
+                        }
+                    },
+                ],
+                'fechafin' => [
+                    'required', 'date_format:Y-m-d\TH:i',
+                    function ($attribute, $value, $fail) use ($fechaCreacion) {
+                        if ($value <= $fechaCreacion) {
+                            $fail('La fecha de realización debe ser posterior a la de creación.');
+                        }
                     }
-                },
-            ],
-            'fechafin' => [
-                'required', 'date_format:Y-m-d\TH:i',
-                function ($attribute, $value, $fail) use ($fechaCreacion) {
-                    if ($value <= $fechaCreacion) {
-                        $fail('La fecha de realización debe ser posterior a la de creación.');
-                    }
-                }
-            ],
-            'anotapost' => ['nullable', 'max:100'],
-            'fichero' => ['nullable', 'file', 'max:10240'],
-        ]);
-        // Almaceno el fichero (si se ha subido) dentro de la carpeta ficheros en el directorio storage/public con el nombre 
-        // original precedido del id de la tarea y guión bajo
-        if ($request->hasFile('fichero') && $request->file('fichero')->isValid()) {
-            $request->file('fichero')->storeAs('ficheros', $id . "_" . $request->fichero->getClientOriginalName(), 'public');
-            // Para guardar el fichero en la base de datos, guardo sólo el nombre con el que se ha almacenado
-            $datos['fichero'] = $id . "_" . $request->fichero->getClientOriginalName();
-        }
-        $tarea->update($datos);
-        // Una vez completada, muestro la tarea en detalle
-        return $this->show($id);
+                ],
+                'anotapost' => ['nullable', 'max:100'],
+                'fichero' => ['nullable', 'file', 'max:10240'],
+            ]);
+            // Almaceno el fichero (si se ha subido) dentro de la carpeta ficheros en el directorio storage/public con el nombre 
+            // original precedido del id de la tarea y guión bajo
+            if ($request->hasFile('fichero') && $request->file('fichero')->isValid()) {
+                $request->file('fichero')->storeAs('ficheros', $id . "_" . $request->fichero->getClientOriginalName(), 'public');
+                // Para guardar el fichero en la base de datos, guardo sólo el nombre con el que se ha almacenado
+                $datos['fichero'] = $id . "_" . $request->fichero->getClientOriginalName();
+            }
+            $tarea->update($datos);
+            // Una vez completada, muestro la tarea en detalle
+            return $this->show($id);
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     public function verIncidencias()
     {
-        $incidencias = Tarea::where('users_id', null)->paginate(4);
-        return view('tareas.tareasVerIncidencias', compact('incidencias'));
+        if (Auth::user()->tipo == 'administrador') {
+            $incidencias = Tarea::where('users_id', null)->paginate(4);
+            return view('tareas.tareasVerIncidencias', compact('incidencias'));
+        } else
+            return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
-
-    //LOS DOS SIGUIENTES MÉTODOS PUEDE QUE NO HAGAN FALTA SI SACO EL clientes_id DE UNA VARIABLE DE SESION PARA EL STORE DE UNA INCIDENCIA 
-
 }

@@ -87,10 +87,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
                         <a class="dropdown-item btn" href="{{ route('tarea.index') }}"><i class="bi bi-card-list"></i> Ver Tareas</a>
+                        @if(Auth::user()->tipo == 'administrador')
                         <a class="dropdown-item btn" href="{{ route('tarea.create') }}"><i class="bi bi-clipboard2-plus"></i> Añadir Tarea</a>
                         <a class="dropdown-item btn" href="{{ route('tarea.pendientes') }}"><i class="bi bi-clock-history"></i> Tareas Pendientes</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item btn" href="{{ route('tarea.incidencias') }}"><i class="bi bi-file-earmark-arrow-up"></i> Incidencias</a>
+                        @endif
                     </div>
                   </li>
                   <li class="nav-item dropdown">
@@ -98,12 +100,15 @@
                         <span class="linkhead"><i class="bi bi-people"></i> Usuarios</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                        @if(Auth::user()->tipo == 'administrador')
                         <a class="dropdown-item btn" href="{{ route('usuario.index') }}"><i class="bi bi-person-lines-fill"></i> Listar Usuarios</a>
                         <a class="dropdown-item btn" href="{{ route('usuario.create') }}"><i class="bi bi-person-plus"></i> Añadir Usuario</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item btn" href=""><i class="bi bi-person-circle"></i> Mi Usuario</a>
+                        @endif
+                        <a class="dropdown-item btn" href="{{ route('usuario.show', Auth::user()->id) }}"><i class="bi bi-person-circle"></i> Mi Usuario</a>
                     </div>
                   </li>
+                  @if(Auth::user()->tipo == 'administrador')
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle btn  linkhead" href="" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="linkhead"><i class="bi bi-wallet-fill"></i> Clientes</span>
@@ -124,6 +129,7 @@
                   {{-- <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                   </li> --}}
+                  @endif
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <div id="sesion">

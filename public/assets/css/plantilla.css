@@ -17,6 +17,7 @@ body {
 
 .show.dropdown .dropdown-toggle::after {
     transform: translateY(3px);
+    color: aqua;
 }
 
 .dropdown-menu {

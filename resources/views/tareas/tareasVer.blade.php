@@ -2,6 +2,12 @@
 @section('cuerpo')
 <h1>Lista de tareas</h1>
 <br>
+@if($tareas->isEmpty())
+<br>
+<div class="alert alert-primary w-25 mx-auto" role="alert">
+    <strong>No hay tareas que listar</strong>
+</div>
+@else
 <table class="table table-striped table-responsive table-condensed" id="listaTareas">
     <thead class="table-dark">
         <tr>
@@ -45,4 +51,5 @@
 <div id="paginacion">
     {{$tareas->links()}}
 </div>
+@endif
 @endsection

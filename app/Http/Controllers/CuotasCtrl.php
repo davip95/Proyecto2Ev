@@ -16,7 +16,7 @@ class CuotasCtrl extends Controller
      */
     public function index()
     {
-        //
+        return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     /**
@@ -26,7 +26,7 @@ class CuotasCtrl extends Controller
      */
     public function create()
     {
-        //
+        return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     /**
@@ -37,7 +37,7 @@ class CuotasCtrl extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     /**
@@ -48,7 +48,7 @@ class CuotasCtrl extends Controller
      */
     public function show($id)
     {
-        //
+        return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
     /**

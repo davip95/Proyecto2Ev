@@ -61,7 +61,7 @@ Route::resource('usuario', UsersCtrl::class)->middleware('auth');
 Route::controller(ClientesCtrl::class)->group(function () {
     Route::get('/cliente/{id}/borrado', 'confirmarBorrado')->middleware('auth')->middleware('admin')->name('cliente.confirmarBorrado');
 });
-Route::resource('cliente', ClientesCtrl::class)->middleware('auth');
+Route::resource('cliente', ClientesCtrl::class)->middleware('auth')->middleware('admin');
 
 Route::controller(CuotasCtrl::class)->group(function () {
     Route::get('/cuota/creaRemesa', 'crearRemesa')->middleware('auth')->middleware('admin')->name('cuota.crearRemesa');
@@ -72,4 +72,4 @@ Route::controller(CuotasCtrl::class)->group(function () {
     Route::post('/cuota/{id}/agregarCuota', 'agregarCuota')->middleware('auth')->middleware('admin')->name('cuota.agregarCuota');
     Route::get('/cuota/{id}/pendientes', 'listarCuotasPendientes')->middleware('auth')->middleware('admin')->name('cuota.listarCuotasPendientes');
 });
-Route::resource('cuota', CuotasCtrl::class)->middleware('auth');
+Route::resource('cuota', CuotasCtrl::class)->middleware('auth')->middleware('admin');
