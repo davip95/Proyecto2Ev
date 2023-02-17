@@ -299,4 +299,16 @@ class TareasCtrl extends Controller
         } else
             return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
+
+    // CREAR ESTOS METODOS DE ABAJO BIEN
+    public function crearIncidencia()
+    {
+        $provincias = Provincia::select('nombre')->get();
+        return view('tareas.tareaCrearIncidencia', compact('provincias'));
+    }
+
+    public function agregarIncidencia()
+    {
+        return view('plantilla');
+    }
 }

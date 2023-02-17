@@ -26,7 +26,7 @@ use PHPUnit\TextUI\XmlConfiguration\Group;
 // });
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('plantilla');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route::middleware('auth')->group(function () {
@@ -39,6 +39,8 @@ require __DIR__ . '/auth.php';
 
 
 Route::controller(TareasCtrl::class)->group(function () {
+    Route::get('/tarea/crearIncidencia', 'crearIncidencia')->name('tarea.crearIncidencia');
+    Route::post('/tarea/agregarIncidencia', 'agregarIncidencia')->name('tarea.agregarIncidencia');
     Route::get('/tarea/pendientes', 'verPendientes')->middleware('auth')->name('tarea.pendientes');
     Route::get('/tarea/incidencias', 'verIncidencias')->middleware('auth')->middleware('admin')->name('tarea.incidencias');
     // LAS DOS RUTAS SIGUIENTES PUEDE QUE NO HAGAN FALTA SI SACO EL clientes_id DE UNA VARIABLE DE SESION PARA EL STORE DE UNA INCIDENCIA 
