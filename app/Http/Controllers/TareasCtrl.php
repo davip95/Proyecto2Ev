@@ -300,15 +300,60 @@ class TareasCtrl extends Controller
             return redirect()->action([AuthenticatedSessionController::class, 'destroy']);
     }
 
-    // CREAR ESTOS METODOS DE ABAJO BIEN
     public function crearIncidencia()
     {
         $provincias = Provincia::select('nombre')->get();
         return view('tareas.tareaCrearIncidencia', compact('provincias'));
     }
 
-    public function agregarIncidencia()
+    public function agregarIncidencia(Request $request)
     {
-        return view('plantilla');
+        $tlf_cliente = $request['telefono_cliente'];
+        $cif_cliente = $request['cif'];
+        $datosCliente = $request->validate([
+            'cif' => [
+                'required', 'max:45', 'regex:/^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/',
+                function ($attribute, $value, $fail) use ($tlf_cliente) {
+                    $cliente = Cliente::select()->where('cif', $value)->where('telefono', $tlf_cliente)->first();
+                    if (is_null($cliente)) {
+                        $fail('No existe ningún cliente con estas credenciales.');
+                    }
+                }
+            ],
+            'telefono_cliente' => [
+                'required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/',
+                function ($attribute, $value, $fail) use ($cif_cliente) {
+                    $cliente = Cliente::select()->where('telefono', $value)->where('cif', $cif_cliente)->first();
+                    if (is_null($cliente)) {
+                        $fail('No existe ningún cliente con estas credenciales.');
+                    }
+                }
+            ],
+        ]);
+        $incidencia = $request->validate([
+            'nombre' => ['required', 'max:45'],
+            'apellidos' => ['required', 'max:45'],
+            'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
+            'descripcion' => ['required', 'max:100'],
+            'correo' => ['required', 'max:100', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
+            'direccion' => ['required', 'max:100'],
+            'poblacion' => ['required', 'max:45'],
+            'codpostal' => ['required', 'max:45', 'regex:/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/'],
+            'provincia' => ['required', 'max:45'],
+            'fechacreacion' => [
+                'required', 'date_format:Y-m-d\TH:i',
+                function ($attribute, $value, $fail) {
+                    if (date("Y-m-d\TH", strtotime($value)) != date("Y-m-d\TH")) {
+                        $fail('La fecha de creación no se puede modificar.');
+                    }
+                },
+            ],
+            'anotaantes' => ['nullable', 'max:100'],
+        ]);
+        $clientes_id = Cliente::select()->where('cif', $datosCliente['cif'])->where('telefono', $datosCliente['telefono_cliente'])->first()->id;
+        $incidencia['clientes_id'] = $clientes_id;
+        $incidencia['estado'] = 'B';
+        Tarea::create($incidencia);
+        return redirect()->route('login')->with('status', 'Incidencia creada correctamente.');
     }
 }

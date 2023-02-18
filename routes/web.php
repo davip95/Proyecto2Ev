@@ -43,9 +43,6 @@ Route::controller(TareasCtrl::class)->group(function () {
     Route::post('/tarea/agregarIncidencia', 'agregarIncidencia')->name('tarea.agregarIncidencia');
     Route::get('/tarea/pendientes', 'verPendientes')->middleware('auth')->name('tarea.pendientes');
     Route::get('/tarea/incidencias', 'verIncidencias')->middleware('auth')->middleware('admin')->name('tarea.incidencias');
-    // LAS DOS RUTAS SIGUIENTES PUEDE QUE NO HAGAN FALTA SI SACO EL clientes_id DE UNA VARIABLE DE SESION PARA EL STORE DE UNA INCIDENCIA 
-    // Route::get('/tarea/{id}/incidencia', 'crearIncidencia')->middleware('auth')->name('tarea.crearIncidencia');
-    // Route::post('/tarea/{id}/incidencia', 'guardarIncidencia')->middleware('auth')->name('tarea.guardarIncidencia');
     Route::get('/tarea/{id}/borrado', 'confirmarBorrado')->middleware('auth')->middleware('admin')->name('tarea.confirmarBorrado');
     Route::get('/tarea/{id}/cambiarEstado', 'cambiarEstado')->middleware('auth')->middleware('operario')->name('tarea.cambiarEstado');
     Route::put('/tarea/{id}/completar', 'completar')->middleware('auth')->middleware('operario')->name('tarea.completar');
