@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AvisoCuota;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Cuota;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class CuotasCtrl extends Controller
 {
@@ -127,11 +129,11 @@ class CuotasCtrl extends Controller
         // Inicializo el array de remesa que incluirá arrays de datos de la cuota mensual de cada cliente
         $remesa = [];
         // Obtengo el mes y el año para ponerlo junto al id del cliente como concepto de la cuota
-        $fecha = Carbon::now()->format("F/Y");
+        $fecha = Carbon::now()->translatedFormat("F/Y");
         $notas = $request->validate([
             'notas' => ['nullable', 'max:200'],
         ]);
-        $clientes = Cliente::select('id', 'nombre', 'importemensual')->get();
+        $clientes = Cliente::select('id', 'nombre', 'importemensual', 'correo')->get();
         foreach ($clientes as $cliente) {
             $datos['concepto'] = $cliente->id . "_" . $fecha;
             $datos['fechaemision'] = Carbon::now()->format("Y-m-d\TH:i");
@@ -142,6 +144,9 @@ class CuotasCtrl extends Controller
             array_push($remesa, $datos);
         }
         Cuota::insert($remesa);
+        foreach ($clientes as $cliente) {
+            Mail::to($cliente->correo)->send(new AvisoCuota);
+        }
         return view('cuotas.cuotasRemesaAgregada');
     }
 
@@ -182,6 +187,8 @@ class CuotasCtrl extends Controller
         $datos['pagada'] = false;
         $datos['clientes_id'] = $id;
         Cuota::insert($datos);
+        $cliente = Cliente::find($id);
+        Mail::to($cliente->correo)->send(new AvisoCuota);
         return $this->listarCuotasCliente($id);
     }
 }
