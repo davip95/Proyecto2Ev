@@ -35,6 +35,8 @@
     &nbsp;&nbsp;
     <a href="{{ route('cliente.index') }}" class="btn btn-primary" role="button">Listado de Clientes</a>
     &nbsp;&nbsp;
+    <a href="{{ route('cliente.edit', $cliente) }}" class="btn btn-warning" role="button">Editar</a>
+    &nbsp;&nbsp;
     <a href="{{ route('cliente.confirmarBorrado', $cliente) }}" class="btn btn-danger" role="button">Borrar Cliente</a>
 </h5>
 @endsection

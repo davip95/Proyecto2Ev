@@ -26,6 +26,7 @@
             <td>
                 <a href="{{ route('cuota.listarCuotasCliente', $cliente) }}" class="btn btn-secondary" role="button">Cuotas</a>
                 <a href="{{ route('cliente.show', $cliente) }}" class="btn btn-info" role="button">Detalles</a>
+                <a href="{{ route('cliente.edit', $cliente) }}" class="btn btn-warning" role="button">Editar</a>
                 <a href="{{ route('cliente.confirmarBorrado', $cliente) }}" class="btn btn-danger" role="button">Borrar</a>
             </td>
         </tr>

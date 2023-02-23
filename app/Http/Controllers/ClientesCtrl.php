@@ -88,7 +88,9 @@ class ClientesCtrl extends Controller
      */
     public function edit($id)
     {
-        //
+        $cliente = Cliente::find($id);
+        $paises = Pais::select('iso3', 'nombre', 'iso_moneda', 'nombre_moneda')->where('iso_moneda', '!=', null)->orderBy('nombre')->get();
+        return view('clientes.clienteModificar', compact('cliente', 'paises'));
     }
 
     /**
@@ -100,7 +102,23 @@ class ClientesCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $datos = $request->validate([
+            'nombre' => ['required', 'max:45'],
+            'correo' => ['required', 'max:45', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
+            'pais' => ['required', 'max:3'],
+            'cif' => ['required', 'max:45', 'regex:/^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/'],
+            'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
+            'cuentacorriente' => ['required', 'max:45', 'regex:/^([A-Z]{2}[ \-]?[0-9]{2})(?=(?:[ \-]?[A-Z0-9]){9,30}$)((?:[ \-]?[A-Z0-9]{3,5}){2,7})([ \-]?[A-Z0-9]{1,3})?$/'],
+            'importemensual' => ['required', 'between:0,99999.99'],
+        ]);
+        // Almaceno la moneda del pais seleccionado para guardar su iso3 en la bd
+        $moneda = Pais::select('iso_moneda')->where('iso3', $datos['pais'])->first();
+        // Compruebo si el pais no tiene moneda y le asigno el valor '-' para indicar que no tiene
+        // if ($moneda->iso_moneda == null)
+        //     $moneda->iso_moneda = '-';
+        $datos['moneda'] = $moneda->iso_moneda;
+        Cliente::find($id)->update($datos);
+        return $this->show($id);
     }
 
     /**
