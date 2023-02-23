@@ -83,6 +83,7 @@
                 <small>{{ $message }}</small>
                 @enderror
                 <br>
+                @if(Auth::user()->tipo == 'administrador')
                 <label class="form-label">Nuevo Tipo</label>
                 <div class="form-check">
                     <input class="form-check-input @error('tipo') is-invalid @enderror" type="radio" name="tipo" id="admin" value="administrador" {{old('tipo', $usuario->tipo) == 'administrador' ? 'checked' : ''}}>
@@ -95,6 +96,7 @@
                 @error('tipo')  
                 <small>{{ $message }}</small>
                 @enderror
+                @endif
                 <br>
                 <br>
                 <br>

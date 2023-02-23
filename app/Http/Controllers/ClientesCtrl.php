@@ -33,7 +33,7 @@ class ClientesCtrl extends Controller
      */
     public function create()
     {
-        $paises = Pais::select('iso3', 'nombre', 'iso_moneda', 'nombre_moneda')->orderBy('nombre')->get();
+        $paises = Pais::select('iso3', 'nombre', 'iso_moneda', 'nombre_moneda')->where('iso_moneda', '!=', null)->orderBy('nombre')->get();
         return view('clientes.clienteCrear', compact('paises'));
     }
 
@@ -57,8 +57,8 @@ class ClientesCtrl extends Controller
         // Almaceno la moneda del pais seleccionado para guardar su iso3 en la bd
         $moneda = Pais::select('iso_moneda')->where('iso3', $datos['pais'])->first();
         // Compruebo si el pais no tiene moneda y le asigno el valor '-' para indicar que no tiene
-        if ($moneda->iso_moneda == null)
-            $moneda->iso_moneda = '-';
+        // if ($moneda->iso_moneda == null)
+        //     $moneda->iso_moneda = '-';
         $datos['moneda'] = $moneda->iso_moneda;
         $cliente = Cliente::create($datos);
         return view('clientes.clienteVerDetalles', compact('cliente'));

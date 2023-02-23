@@ -26,7 +26,8 @@ class User extends Authenticatable
         'telefono',
         'direccion',
         'fechaalta',
-        'tipo'
+        'tipo',
+        'provider_id'
     ];
     protected $dates = ['fechaalta'];
 

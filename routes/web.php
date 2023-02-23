@@ -2,12 +2,16 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\TareasCtrl;
 use App\Http\Controllers\UsersCtrl;
 use App\Http\Controllers\ClientesCtrl;
 use App\Http\Controllers\CuotasCtrl;
-
+use App\Http\Controllers\LoginCtrl;
+use App\Http\Controllers\LoginGoogleCtrl;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 
 /*
@@ -37,6 +41,13 @@ Route::get('/', function () {
 
 require __DIR__ . '/auth.php';
 
+Route::get('/auth/github/redirect', [LoginCtrl::class, 'redirectToProvider']);
+
+Route::get('/auth/github/callback', [LoginCtrl::class, 'handleProviderCallback']);
+
+Route::get('/auth/google/redirect', [LoginGoogleCtrl::class, 'redirectToProvider']);
+
+Route::get('/auth/google/callback', [LoginGoogleCtrl::class, 'handleProviderCallback']);
 
 Route::controller(TareasCtrl::class)->group(function () {
     Route::get('/tarea/crearIncidencia', 'crearIncidencia')->name('tarea.crearIncidencia');

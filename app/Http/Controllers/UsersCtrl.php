@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -118,24 +119,45 @@ class UsersCtrl extends Controller
         if (Auth::user()->tipo == 'administrador' || $id == Auth::user()->id) {
             // Almaceno la contraseña para comprobar que coincide con su repeticion en la validacion
             $pass = $request->password;
-            $datos = $request->validate([
-                'name' => ['required', 'max:255', 'alpha_num'],
-                'email' => ['required', 'max:255', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
-                'password' => ['required', 'max:255'],
-                'passrep' => [
-                    'required', 'max:255',
-                    function ($attribute, $value, $fail) use ($pass) {
-                        if ($value != $pass) {
-                            $fail('Las contraseñas no coinciden.');
+            if (Auth::user()->tipo == 'administrador') {
+                $datos = $request->validate([
+                    'name' => ['required', 'max:255', 'alpha_num'],
+                    'email' => ['required', 'max:255', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
+                    'password' => ['required', 'max:255'],
+                    'passrep' => [
+                        'required', 'max:255',
+                        function ($attribute, $value, $fail) use ($pass) {
+                            if ($value != $pass) {
+                                $fail('Las contraseñas no coinciden.');
+                            }
                         }
-                    }
-                ],
-                'dni' => ['required', 'max:45', 'regex:/((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)/'],
-                'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
-                'direccion' => ['required', 'max:45'],
-                'fechaalta' => ['required', 'date_format:Y-m-d\TH:i'],
-                'tipo' => ['required', 'max:45'],
-            ]);
+                    ],
+                    'dni' => ['required', 'max:45', 'regex:/((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)/'],
+                    'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
+                    'direccion' => ['required', 'max:45'],
+                    'fechaalta' => ['required', 'date_format:Y-m-d\TH:i'],
+                    'tipo' => ['required', 'max:45'],
+                ]);
+            } else {
+                $datos = $request->validate([
+                    'name' => ['required', 'max:255', 'alpha_num'],
+                    'email' => ['required', 'max:255', 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/'],
+                    'password' => ['required', 'max:255'],
+                    'passrep' => [
+                        'required', 'max:255',
+                        function ($attribute, $value, $fail) use ($pass) {
+                            if ($value != $pass) {
+                                $fail('Las contraseñas no coinciden.');
+                            }
+                        }
+                    ],
+                    'dni' => ['required', 'max:45', 'regex:/((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)/'],
+                    'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
+                    'direccion' => ['required', 'max:45'],
+                    'fechaalta' => ['required', 'date_format:Y-m-d\TH:i'],
+                ]);
+            }
+            $datos['password'] = Hash::make($datos['password']);
             User::find($id)->update($datos);
             return $this->show($id);
         } else

@@ -26,11 +26,14 @@
             <td>{{$usuario['tipo']}}</td>
             <td>
                 <a href="{{ route('usuario.edit', $usuario) }}" class="btn btn-warning" role="button">Editar</a>
+                @if(Auth::user()->tipo == 'administrador')
                 <a href="{{ route('usuario.confirmarBorrado', $usuario) }}" class="btn btn-danger" role="button">Borrar</a>
+                @endif
             </td>
         </tr>
     </tbody>
 </table>
+@if(Auth::user()->tipo == 'administrador')
 <h5><a href="{{ route('usuario.index') }}" class="btn btn-primary" role="button">Ir a Listado de Usuarios</a></h5>
-
+@endif
 @endsection

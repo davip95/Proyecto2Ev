@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Mail\AvisoCuota;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
