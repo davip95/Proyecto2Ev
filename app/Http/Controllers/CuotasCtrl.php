@@ -9,6 +9,7 @@ use App\Models\Cliente;
 use App\Models\Cuota;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use AmrShawky\LaravelCurrency\Facade\Currency;
 
 class CuotasCtrl extends Controller
 {
@@ -76,6 +77,7 @@ class CuotasCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
+        // AÑADIR CAMBIO MONEDA
         $pagada = $request->pagada;
         $fechapago = $request->fechapago;
         $datos = $request->validate([
@@ -122,6 +124,12 @@ class CuotasCtrl extends Controller
     public function crearRemesa()
     {
         $clientes = Cliente::select('id', 'nombre', 'importemensual', 'moneda')->paginate(4);
+        foreach ($clientes as $cliente) {
+            $moneda = $cliente->moneda;
+            $conversion = Currency::convert()->from($moneda)->to('EUR')->amount($cliente->importemensual)->round(2)->get();
+            $cliente->importemensual = $conversion;
+        }
+        //$clientes->paginate(4);
         return view('cuotas.cuotasCrearRemesa', compact('clientes'));
     }
 
@@ -143,6 +151,9 @@ class CuotasCtrl extends Controller
             $datos['notas'] = $notas['notas'];
             $datos['clientes_id'] = $cliente->id;
             array_push($remesa, $datos);
+            $moneda = $cliente->moneda;
+            $conversion = Currency::convert()->from($moneda)->to('EUR')->amount($datos['importe'])->round(2)->get();
+            $datos['importe'] = $conversion;
         }
         Cuota::insert($remesa);
         foreach ($clientes as $cliente) {
@@ -187,6 +198,9 @@ class CuotasCtrl extends Controller
         $datos['fechaemision'] = Carbon::now()->format("Y-m-d\TH:i");
         $datos['pagada'] = false;
         $datos['clientes_id'] = $id;
+        $moneda = Cliente::where('id', $id)->first()->moneda;
+        $conversion = Currency::convert()->from($moneda)->to('EUR')->amount($datos['importe'])->round(2)->get();
+        $datos['importe'] = $conversion;
         Cuota::insert($datos);
         $cliente = Cliente::find($id);
         Mail::to($cliente->correo)->send(new AvisoCuota);

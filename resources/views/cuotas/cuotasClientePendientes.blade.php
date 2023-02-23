@@ -7,7 +7,7 @@
         <tr>
             <th>Concepto</th>
             <th>Fecha Emisión</th>
-            <th>Importe</th>
+            <th>Importe (€)</th>
             <th>Pago</th>
             <th>Fecha Pago</th>
             <th>Notas</th>

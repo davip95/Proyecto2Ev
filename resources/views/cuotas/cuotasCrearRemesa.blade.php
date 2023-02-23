@@ -24,7 +24,7 @@
             <td>{{$cliente['id'] . "_" . strftime("%B/%Y")}}</td>
             <td>{{strftime("%d/%m/%Y")}}</td>
             <td>{{$cliente['nombre']}}</td>
-            <td>{{$cliente['importemensual'] . " " . $cliente['moneda']}}</td>
+            <td>{{$cliente['importemensual'] . "€"}}</td>
         </tr>
         @endforeach
     </tbody>
