@@ -52,7 +52,7 @@ class ClientesCtrl extends Controller
             'cif' => ['required', 'max:45', 'regex:/^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/'],
             'telefono' => ['required', 'max:45', 'regex:/(\+34|0034|34)?[ -]*(6|7|8|9)[ -]*([0-9][ -]*){8}/'],
             'cuentacorriente' => ['required', 'max:45', 'regex:/^([A-Z]{2}[ \-]?[0-9]{2})(?=(?:[ \-]?[A-Z0-9]){9,30}$)((?:[ \-]?[A-Z0-9]{3,5}){2,7})([ \-]?[A-Z0-9]{1,3})?$/'],
-            'importemensual' => ['required', 'between:0,99999.99'],
+            'importemensual' => ['required', 'between:0.01,99999.99'],
         ]);
         // Almaceno la moneda del pais seleccionado para guardar su iso3 en la bd
         $moneda = Pais::select('iso_moneda')->where('iso3', $datos['pais'])->first();

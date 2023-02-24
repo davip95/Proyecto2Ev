@@ -12,6 +12,7 @@ use App\Http\Controllers\ClientesCtrl;
 use App\Http\Controllers\CuotasCtrl;
 use App\Http\Controllers\LoginCtrl;
 use App\Http\Controllers\LoginGoogleCtrl;
+use App\Http\Controllers\PayPalController;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 
 /*
@@ -83,3 +84,8 @@ Route::controller(CuotasCtrl::class)->group(function () {
     Route::get('/cuota/{id}/pendientes', 'listarCuotasPendientes')->middleware('auth')->middleware('admin')->name('cuota.listarCuotasPendientes');
 });
 Route::resource('cuota', CuotasCtrl::class)->middleware('auth')->middleware('admin');
+
+Route::get('/paypal/pay/{cuota}', [PayPalController::class, 'payWithPayPal'])->name('paypal.pay');
+Route::get('/paypal/status/{cuota}', [PayPalController::class, 'payPalStatus'])->name('paypal.status');
+Route::get('/pagocorrecto', [PayPalController::class, 'pagoCorrecto'])->name('pagoCorrecto');
+Route::get('/paypal/failed', [PayPalController::class, 'pagoFallado'])->name('pagoFallado');

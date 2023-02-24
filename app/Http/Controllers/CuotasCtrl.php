@@ -129,7 +129,6 @@ class CuotasCtrl extends Controller
             $conversion = Currency::convert()->from($moneda)->to('EUR')->amount($cliente->importemensual)->round(2)->get();
             $cliente->importemensual = $conversion;
         }
-        //$clientes->paginate(4);
         return view('cuotas.cuotasCrearRemesa', compact('clientes'));
     }
 
