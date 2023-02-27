@@ -10,6 +10,7 @@ use App\Models\Cuota;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use AmrShawky\LaravelCurrency\Facade\Currency;
+use PDF;
 
 class CuotasCtrl extends Controller
 {
@@ -204,5 +205,21 @@ class CuotasCtrl extends Controller
         $cliente = Cliente::find($id);
         Mail::to($cliente->correo)->send(new AvisoCuota);
         return $this->listarCuotasCliente($id);
+    }
+
+    public function crearPDF($id)
+    {
+        $cuota = Cuota::find($id);
+
+        $vista = view('cuotas.cuotaCrearPDF', compact('cuota'))->render();
+
+        $pdf = new PDF();
+        $pdf->SetTitle('Factura #' . Carbon::now()->translatedFormat("F/Y") . '_' . $cuota->id);
+        $pdf->SetMargins(10, 10, 10);
+        $pdf->AddPage();
+
+        // Agrega el contenido de la vista al PDF
+        $pdf->writeHTML($vista, true, false, true, false, '');
+        $pdf->Output('Factura' . Carbon::now()->translatedFormat("F/Y") . '_' . $cuota->id . '.pdf', 'D');
     }
 }

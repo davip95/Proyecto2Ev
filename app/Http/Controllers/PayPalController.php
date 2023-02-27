@@ -95,9 +95,7 @@ class PayPalController extends Controller
 
         if ($result->getState() === 'approved') {
             $status = 'Gracias! El pago a través de PayPal se ha ralizado correctamente.';
-            $cuota = Cuota::find($id);
-            $cuota->pagada = 1;
-            $cuota->save();
+            $cuota = Cuota::find($id)->update(['pagada' => 1, 'fechapago' => date('Y-m-d\TH:i')]);
             return redirect(route('pagoCorrecto'))->with(compact('status'));
         }
 

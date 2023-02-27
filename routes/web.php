@@ -26,19 +26,9 @@ use PHPUnit\TextUI\XmlConfiguration\Group;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/', function () {
     return view('plantilla');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
 
 require __DIR__ . '/auth.php';
 
@@ -82,6 +72,7 @@ Route::controller(CuotasCtrl::class)->group(function () {
     Route::get('/cuota/{id}/crearCuota', 'crearCuota')->middleware('auth')->middleware('admin')->name('cuota.crearCuota');
     Route::post('/cuota/{id}/agregarCuota', 'agregarCuota')->middleware('auth')->middleware('admin')->name('cuota.agregarCuota');
     Route::get('/cuota/{id}/pendientes', 'listarCuotasPendientes')->middleware('auth')->middleware('admin')->name('cuota.listarCuotasPendientes');
+    Route::get('/cuota/{id}/pdf', 'crearPDF')->middleware('auth')->middleware('admin')->name('cuota.pdf');
 });
 Route::resource('cuota', CuotasCtrl::class)->middleware('auth')->middleware('admin');
 

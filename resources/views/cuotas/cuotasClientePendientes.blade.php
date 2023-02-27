@@ -37,6 +37,7 @@
                 @if(!$cuota->pagada)
                 <a href="{{ route('paypal.pay', $cuota) }}" class="btn btn-primary" role="button">Pagar</a>
                 @endif
+                <a href="{{ route('cuota.pdf', $cuota) }}" class="btn btn-info" role="button">Factura</a>
                 <a href="{{ route('cuota.edit', $cuota) }}" class="btn btn-warning" role="button">Corregir</a>
                 <a href="{{ route('cuota.confirmarBorrado', $cuota) }}" class="btn btn-danger" role="button">Borrar</a>
             </td>
