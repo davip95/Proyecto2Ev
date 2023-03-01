@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Cuota;
 use App\Models\Pais;
 use Illuminate\Http\Request;
 
@@ -130,6 +131,10 @@ class ClientesCtrl extends Controller
     public function destroy($id)
     {
         $cliente = Cliente::find($id);
+        $cuotas = Cuota::select()->where('clientes_id', $id)->get();
+        foreach ($cuotas as $cuota) {
+            $cuota->delete();
+        }
         $cliente->delete();
         return view('clientes.clienteEliminado', ['id' => $id]);
     }

@@ -28,7 +28,7 @@
         </tr>
     </tbody>
 </table>
-<div class="alert alert-danger aletarborrar" role="alert"><strong>Esta operación es irreversible. Asegúrese de que quiere eliminar el usuario antes de confirmarlo.</strong></div>
+<div class="alert alert-danger aletarborrar" role="alert"><strong>Esta operación es irreversible. Todas sus tareas quedarán sin asignar (INCIDENCIAS). Asegúrese de que quiere eliminar el usuario antes de confirmarlo.</strong></div>
 <h5><a href="{{ route('usuario.show', $usuario) }}" class="btn btn-success" role="button"><i class="bi bi-x-square"></i> Cancelar Borrado</a></h5>
 <br>
 <form action="{{ route('usuario.destroy', $usuario) }}" method="post">

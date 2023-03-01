@@ -78,7 +78,6 @@ class CuotasCtrl extends Controller
      */
     public function update(Request $request, $id)
     {
-        // AÑADIR CAMBIO MONEDA
         $pagada = $request->pagada;
         $fechapago = $request->fechapago;
         $datos = $request->validate([

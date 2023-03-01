@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Models\Tarea;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -173,7 +174,12 @@ class UsersCtrl extends Controller
     public function destroy($id)
     {
         if (Auth::user()->tipo == 'administrador') {
+            // Borro primero el usuario asignado en todas sus tareas
             $usuario = User::find($id);
+            $tareas = Tarea::select()->where('users_id', $id)->get();
+            foreach ($tareas as $tarea) {
+                $tarea->update(['users_id' => null]);
+            }
             $usuario->delete();
             return view('usuarios.usuarioEliminado', ['id' => $id]);
         } else

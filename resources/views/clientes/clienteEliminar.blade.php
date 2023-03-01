@@ -30,7 +30,7 @@
         </tr>
     </tbody>
 </table>
-<div class="alert alert-danger aletarborrar" role="alert"><strong>Esta operación es irreversible. Asegúrese de que quiere eliminar el cliente antes de confirmarlo.</strong></div>
+<div class="alert alert-danger aletarborrar" role="alert"><strong>Esta operación es irreversible. Se borrarán todas las cuotas asociadas. Asegúrese de que quiere eliminar el cliente antes de confirmarlo.</strong></div>
 <h5><a href="{{ route('cliente.show', $cliente) }}" class="btn btn-success" role="button"><i class="bi bi-x-square"></i> Cancelar Borrado</a></h5>
 <br>
 <form action="{{ route('cliente.destroy', $cliente) }}" method="post">
