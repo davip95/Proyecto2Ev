@@ -141,7 +141,7 @@ class CuotasCtrl extends Controller
         $notas = $request->validate([
             'notas' => ['nullable', 'max:200'],
         ]);
-        $clientes = Cliente::select('id', 'nombre', 'importemensual', 'correo')->get();
+        $clientes = Cliente::select('id', 'nombre', 'importemensual', 'correo', 'moneda')->get();
         foreach ($clientes as $cliente) {
             $datos['concepto'] = $cliente->id . "_" . $fecha;
             $datos['fechaemision'] = Carbon::now()->format("Y-m-d\TH:i");

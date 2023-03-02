@@ -73,8 +73,10 @@
                 @if($tarea['estado'] != 'R' && $tarea['estado'] != 'C')
                 <a href="{{ route('tarea.cambiarEstado', $tarea) }}" class="btn btn-success" role="button">Completar</a>
                 @endif
+                @if(Auth::user()->tipo=='administrador')
                 <a href="{{ route('tarea.edit', $tarea) }}" class="btn btn-warning" role="button">Editar</a>
                 <a href="{{ route('tarea.confirmarBorrado', $tarea) }}" class="btn btn-danger" role="button">Borrar</a>
+                @endif
             </td>
         </tr>
     </tbody>

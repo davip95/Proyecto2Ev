@@ -41,8 +41,10 @@
             @endif
             <td>
                 <a href=" {{ route('tarea.show', $tarea) }} " class="btn btn-info" role="button">Detalles</a>
+                @if(Auth::user()->tipo=='administrador')
                 <a href="{{ route('tarea.edit', $tarea) }}" class="btn btn-warning" role="button">Editar</a>
                 <a href="{{ route('tarea.confirmarBorrado', $tarea) }}" class="btn btn-danger" role="button">Borrar</a>
+                @endif
             </td>
         </tr>
         @endforeach
