@@ -308,6 +308,19 @@ class RutasTest extends TestCase
         $response->assertViewHas('cliente');
     }
 
+    public function test_cuota_see()
+    {
+        $usuario = User::where('tipo', 'administrador')->first();
+        $cliente = Cliente::find(32)->id;
+        $response = $this->actingAs($usuario)
+            ->get('cuota/' . $cliente . '/crearCuota');
+
+        if ($response->status() == 302) {
+            $response = $this->followRedirects($response);
+        }
+        $response->assertSee('Añadir cuota a ');
+    }
+
     public function test_cuota_show()
     {
         $usuario = User::first();
