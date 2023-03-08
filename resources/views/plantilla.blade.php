@@ -81,6 +81,10 @@
                     
                     <a class="dropdown-item btn" href="{{ route('cliente.verRusos') }}"><i class="bi bi-wallet-fill"></i> Clientes Rusos</a>
                   </li>
+                  <li class="nav-item dropdown">
+                    
+                    <a class="dropdown-item btn" href="{{ route('cuota.tiposCambio') }}">Tipos de Cambio</a>
+                  </li>
                   @endif
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

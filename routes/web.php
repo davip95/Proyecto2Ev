@@ -75,6 +75,7 @@ Route::controller(CuotasCtrl::class)->group(function () {
     Route::post('/cuota/{id}/agregarCuota', 'agregarCuota')->middleware('auth')->middleware('admin')->name('cuota.agregarCuota');
     Route::get('/cuota/{id}/pendientes', 'listarCuotasPendientes')->middleware('auth')->middleware('admin')->name('cuota.listarCuotasPendientes');
     Route::get('/cuota/{id}/pdf', 'crearPDF')->middleware('auth')->middleware('admin')->name('cuota.pdf');
+    Route::get('/cuota/tiposCambio', 'tiposCambio')->middleware('auth')->middleware('admin')->name('cuota.tiposCambio');
 });
 Route::resource('cuota', CuotasCtrl::class)->middleware('auth')->middleware('admin');
 

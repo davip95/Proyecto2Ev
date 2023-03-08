@@ -10,6 +10,7 @@ use App\Models\Cuota;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use AmrShawky\LaravelCurrency\Facade\Currency;
+use App\Models\Pais;
 use PDF;
 
 class CuotasCtrl extends Controller
@@ -220,5 +221,14 @@ class CuotasCtrl extends Controller
         // Agrega el contenido de la vista al PDF
         $pdf->writeHTML($vista, true, false, true, false, '');
         $pdf->Output('Factura' . Carbon::now()->translatedFormat("F/Y") . '_' . $cuota->id . '.pdf', 'D');
+    }
+
+    public function tiposCambio()
+    {
+        $monedas = Pais::select('iso_moneda', 'nombre_moneda')->where('iso_moneda', '!=', null)->paginate(4);
+        foreach ($monedas as $moneda) {
+            $moneda['cambio'] =  Currency::convert()->from('EUR')->to($moneda->iso_moneda)->get();
+        }
+        return view('cuotas.verTiposCambio', compact('monedas'));
     }
 }
