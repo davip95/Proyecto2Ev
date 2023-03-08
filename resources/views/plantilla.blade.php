@@ -68,12 +68,18 @@
                     </div>
                   </li>
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle btn linkhead" href="" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle btn linkhead" href="{{ route('cliente.verRusos') }}" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="linkhead"><i class="bi bi-journals"></i> Cuotas</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
                         <a class="dropdown-item btn" href="{{ route('cuota.crearRemesa') }}"><i class="bi bi-journal-plus"></i> Añadir Remesa</a>
                     </div>
+                  </li>
+                  @endif
+                  @if(Auth::user()->tipo == 'administrador')
+                  <li class="nav-item dropdown">
+                    
+                    <a class="dropdown-item btn" href="{{ route('cliente.verRusos') }}"><i class="bi bi-wallet-fill"></i> Clientes Rusos</a>
                   </li>
                   @endif
                 </ul>

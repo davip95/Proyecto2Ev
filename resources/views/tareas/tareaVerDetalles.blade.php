@@ -70,7 +70,7 @@
             </td>
             <td>
                 <!-- Solo muestro el boton de completar si la tarea no está realizada ni cancelada -->
-                @if($tarea['estado'] != 'R' && $tarea['estado'] != 'C')
+                @if($tarea['estado'] != 'R' && $tarea['estado'] != 'C' && Auth::user()->tipo=='operario')
                 <a href="{{ route('tarea.cambiarEstado', $tarea) }}" class="btn btn-success" role="button">Completar</a>
                 @endif
                 @if(Auth::user()->tipo=='administrador')

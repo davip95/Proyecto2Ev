@@ -61,6 +61,8 @@ Route::resource('usuario', UsersCtrl::class)->middleware('auth');
 
 Route::controller(ClientesCtrl::class)->group(function () {
     Route::get('/cliente/{id}/borrado', 'confirmarBorrado')->middleware('auth')->middleware('admin')->name('cliente.confirmarBorrado');
+    Route::get('/losrusos', 'verRusos')->middleware('auth')->middleware('admin')->name('cliente.verRusos');
+    Route::get('/losrusospdf', 'verRusosPDF')->middleware('auth')->middleware('admin')->name('cliente.verRusosPDF');
 });
 Route::resource('cliente', ClientesCtrl::class)->middleware('auth')->middleware('admin');
 

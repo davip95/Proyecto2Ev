@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\Cuota;
 use App\Models\Pais;
 use Illuminate\Http\Request;
+use PDF;
 
 class ClientesCtrl extends Controller
 {
@@ -143,5 +144,42 @@ class ClientesCtrl extends Controller
     {
         $cliente = Cliente::find($id);
         return view('clientes.clienteEliminar', compact('cliente'));
+    }
+
+    public function verRusos()
+    {
+        $clientes = Cliente::where('pais', 'RUS')->get();
+        foreach ($clientes as $cliente) {
+            $cuotas = Cuota::where('clientes_id', $cliente->id)->get();
+            $importeTotal = 0;
+            foreach ($cuotas as $cuota) {
+                $importeTotal += $cuota->importe;
+            }
+            $cliente['importetotal'] = $importeTotal;
+        }
+        return view('clientes.clientesRusos', compact('clientes'));
+    }
+
+    public function verRusosPDF()
+    {
+        $clientes = Cliente::where('pais', 'RUS')->get();
+        foreach ($clientes as $cliente) {
+            $cuotas = Cuota::where('clientes_id', $cliente->id)->get();
+            $importeTotal = 0;
+            foreach ($cuotas as $cuota) {
+                $importeTotal += $cuota->importe;
+            }
+            $cliente['importetotal'] = $importeTotal;
+        }
+        $vista = view('clientes.clientesRusosPDF', compact('clientes'))->render();
+
+        $pdf = new PDF();
+        $pdf->SetTitle('Clientes Rusos');
+        $pdf->SetMargins(10, 10, 10);
+        $pdf->AddPage();
+
+        // Agrega el contenido de la vista al PDF
+        $pdf->writeHTML($vista, true, false, true, false, '');
+        $pdf->Output('Clientes Rusos.pdf', 'I');
     }
 }

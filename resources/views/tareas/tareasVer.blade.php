@@ -11,6 +11,7 @@
 <table class="table table-striped table-responsive table-condensed" id="listaTareas">
     <thead class="table-dark">
         <tr>
+            <th>Nº</th>
             <th>Fecha Creación</th>
             <th>Cliente</th>
             <th>Contacto</th>
@@ -26,6 +27,7 @@
     <tbody>
         @foreach ($tareas as $tarea)
         <tr>
+            <td>{{$tareas->firstItem() + $loop->index}}</td>
             <td>{{$tarea['fechacreacion']->format('d/m/Y H:i')}}</td>
             <td>{{$tarea->clientes->nombre}}</td>
             <td>{{$tarea['nombre']}}</td>
